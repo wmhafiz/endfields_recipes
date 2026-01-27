@@ -117,11 +117,12 @@ export function useProductionChain({
 
         const nodeData: ItemNodeData = {
           itemName: chainNode.itemName!,
-          imagePath: item ? getImagePath(item.localImagePath) : '/images/placeholder.png',
+          imagePath: item?.localImagePath ? getImagePath(item.localImagePath) : undefined,
           isRawMaterial: chainNode.isRawMaterial,
           hiddenDescendants: chainNode.hiddenDescendants,
           onToggleCollapse,
           hasInputs,
+          quantity: chainNode.quantity,
         }
 
         return {
@@ -132,11 +133,13 @@ export function useProductionChain({
         }
       } else {
         const facility = facilitiesByName.get(chainNode.facilityName!)
+        // Look up processingTime from facility data, not from recipe
+        const processingTime = facility?.processingTime
 
         const nodeData: FacilityNodeData = {
           facilityName: chainNode.facilityName!,
-          imagePath: facility ? getImagePath(facility.localImagePath) : '/images/placeholder.png',
-          processingTime: chainNode.processingTime ?? 0,
+          imagePath: facility?.localImagePath ? getImagePath(facility.localImagePath) : undefined,
+          processingTime,
         }
 
         return {

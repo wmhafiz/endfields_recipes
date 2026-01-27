@@ -1,56 +1,54 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import { useState, useMemo } from 'react'
-
-interface Item {
-  id: string
-  name: string
-  localImagePath: string
-}
-
-interface Facility {
-  id: string
-  name: string
-  localImagePath: string
-}
-
-interface Recipe {
-  inputs: string[]
-  facility: string
-  output: string
-  processingTime: number
-}
-
-interface RecipesData {
-  totalItems: number
-  items: Item[]
-  facilities: Facility[]
-  recipes: Recipe[]
-}
+import type { RecipesData } from '../types/recipes'
+import { ImageOrPlaceholder } from './ImageOrPlaceholder'
 
 interface ItemsDisplayProps {
   data: RecipesData
 }
 
 type ViewMode = 'grid' | 'list'
+const UNCATEGORIZED = 'Uncategorized'
+const ALL_CATEGORIES = 'All'
 
 export function ItemsDisplay({ data }: ItemsDisplayProps) {
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<string>(ALL_CATEGORIES)
+
+  // Derive unique categories from items
+  const categories = useMemo(() => {
+    const categorySet = new Set<string>()
+    for (const item of data.items) {
+      if (item.category) {
+        categorySet.add(item.category)
+      }
+    }
+    return [ALL_CATEGORIES, ...Array.from(categorySet).sort(), UNCATEGORIZED]
+  }, [data.items])
 
   const filteredItems = useMemo(() => {
-    if (!searchQuery.trim()) return data.items
-    const query = searchQuery.toLowerCase()
-    return data.items.filter((item) => item.name.toLowerCase().includes(query))
-  }, [data.items, searchQuery])
+    let items = data.items
 
-  const getImagePath = (localPath: string) => {
-    if (localPath.startsWith('/')) return localPath
-    if (localPath.startsWith('./')) return localPath.replace('./', '/')
-    return `/${localPath}`
-  }
+    // Filter by category
+    if (selectedCategory !== ALL_CATEGORIES) {
+      if (selectedCategory === UNCATEGORIZED) {
+        items = items.filter((item) => !item.category)
+      } else {
+        items = items.filter((item) => item.category === selectedCategory)
+      }
+    }
+
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      items = items.filter((item) => item.name.toLowerCase().includes(query))
+    }
+
+    return items
+  }, [data.items, searchQuery, selectedCategory])
 
   return (
     <div className="items-container">
@@ -84,6 +82,18 @@ export function ItemsDisplay({ data }: ItemsDisplayProps) {
               className="search-input"
             />
           </div>
+
+          <select
+            className="category-filter"
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            {categories.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
 
           <div className="view-toggle">
             <button
@@ -121,8 +131,8 @@ export function ItemsDisplay({ data }: ItemsDisplayProps) {
             className={`item-card ${viewMode}`}
           >
             <div className="item-image-wrapper">
-              <Image
-                src={getImagePath(item.localImagePath)}
+              <ImageOrPlaceholder
+                imagePath={item.localImagePath}
                 alt={item.name}
                 width={viewMode === 'grid' ? 80 : 48}
                 height={viewMode === 'grid' ? 80 : 48}

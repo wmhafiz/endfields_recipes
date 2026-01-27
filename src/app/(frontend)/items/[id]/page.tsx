@@ -1,20 +1,14 @@
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 
 import recipesData from '@/data/recipes.json'
 import { ItemHeader } from '../../components/ItemHeader'
 import { ProductionChain } from '../../components/ProductionChain'
-import type { RecipesData } from '../../utils/buildProductionChain'
+import { ImageOrPlaceholder } from '../../components/ImageOrPlaceholder'
+import type { RecipesData } from '../../types/recipes'
 
 interface ItemPageProps {
   params: Promise<{ id: string }>
-}
-
-function getImagePath(localPath: string): string {
-  if (localPath.startsWith('/')) return localPath
-  if (localPath.startsWith('./')) return localPath.replace('./', '/')
-  return `/${localPath}`
 }
 
 export default async function ItemPage({ params }: ItemPageProps) {
@@ -31,8 +25,8 @@ export default async function ItemPage({ params }: ItemPageProps) {
   // Find recipes that produce this item
   const producedByRecipes = data.recipes.filter((r) => r.output === item.name)
 
-  // Find recipes that use this item as input
-  const usedInRecipes = data.recipes.filter((r) => r.inputs.includes(item.name))
+  // Find recipes that use this item as input (now with quantified inputs)
+  const usedInRecipes = data.recipes.filter((r) => r.inputs.some((i) => i.item === item.name))
 
   // Check if this is a raw material (no recipe produces it)
   const isRawMaterial = producedByRecipes.length === 0
@@ -70,29 +64,31 @@ export default async function ItemPage({ params }: ItemPageProps) {
             <div className="recipe-cards">
               {producedByRecipes.map((recipe, index) => {
                 const facility = facilitiesByName.get(recipe.facility)
+                const facilityTime = facility?.processingTime
                 return (
                   <div key={index} className="detail-recipe-card">
                     <div className="recipe-inputs">
                       <span className="recipe-label">Inputs</span>
                       <div className="recipe-items">
                         {recipe.inputs.map((input, i) => {
-                          const inputItem = itemsByName.get(input)
+                          const inputItem = itemsByName.get(input.item)
                           return (
                             <Link
                               key={i}
                               href={inputItem ? `/items/${inputItem.id}` : '#'}
                               className="recipe-item-link"
                             >
-                              {inputItem && (
-                                <Image
-                                  src={getImagePath(inputItem.localImagePath)}
-                                  alt={input}
-                                  width={32}
-                                  height={32}
-                                  className="recipe-item-img"
-                                />
+                              <ImageOrPlaceholder
+                                imagePath={inputItem?.localImagePath}
+                                alt={input.item}
+                                width={32}
+                                height={32}
+                                className="recipe-item-img"
+                              />
+                              <span>{input.item}</span>
+                              {input.quantity > 1 && (
+                                <span className="quantity-badge">×{input.quantity}</span>
                               )}
-                              <span>{input}</span>
                             </Link>
                           )
                         })}
@@ -104,17 +100,17 @@ export default async function ItemPage({ params }: ItemPageProps) {
                     <div className="recipe-facility">
                       <span className="recipe-label">Facility</span>
                       <div className="recipe-facility-info">
-                        {facility && (
-                          <Image
-                            src={getImagePath(facility.localImagePath)}
-                            alt={recipe.facility}
-                            width={32}
-                            height={32}
-                            className="recipe-facility-img"
-                          />
-                        )}
+                        <ImageOrPlaceholder
+                          imagePath={facility?.localImagePath}
+                          alt={recipe.facility}
+                          width={32}
+                          height={32}
+                          className="recipe-facility-img"
+                        />
                         <span>{recipe.facility}</span>
-                        <span className="recipe-time">⏱ {recipe.processingTime}s</span>
+                        {facilityTime != null && facilityTime > 0 && (
+                          <span className="recipe-time">⏱ {facilityTime}s</span>
+                        )}
                       </div>
                     </div>
 
@@ -123,16 +119,25 @@ export default async function ItemPage({ params }: ItemPageProps) {
                     <div className="recipe-output">
                       <span className="recipe-label">Output</span>
                       <div className="recipe-output-info">
-                        <Image
-                          src={getImagePath(item.localImagePath)}
+                        <ImageOrPlaceholder
+                          imagePath={item.localImagePath}
                           alt={item.name}
                           width={32}
                           height={32}
                           className="recipe-item-img"
                         />
                         <span>{item.name}</span>
+                        {recipe.outputQuantity && recipe.outputQuantity > 1 && (
+                          <span className="quantity-badge">×{recipe.outputQuantity}</span>
+                        )}
                       </div>
                     </div>
+
+                    {recipe.notes && (
+                      <div className="recipe-notes">
+                        <span className="recipe-notes-text">{recipe.notes}</span>
+                      </div>
+                    )}
                   </div>
                 )
               })}
@@ -149,6 +154,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
             <div className="recipe-cards">
               {usedInRecipes.map((recipe, index) => {
                 const facility = facilitiesByName.get(recipe.facility)
+                const facilityTime = facility?.processingTime
                 const outputItem = itemsByName.get(recipe.output)
                 return (
                   <div key={index} className="detail-recipe-card">
@@ -156,24 +162,25 @@ export default async function ItemPage({ params }: ItemPageProps) {
                       <span className="recipe-label">Inputs</span>
                       <div className="recipe-items">
                         {recipe.inputs.map((input, i) => {
-                          const inputItem = itemsByName.get(input)
-                          const isCurrentItem = input === item.name
+                          const inputItem = itemsByName.get(input.item)
+                          const isCurrentItem = input.item === item.name
                           return (
                             <Link
                               key={i}
                               href={inputItem ? `/items/${inputItem.id}` : '#'}
                               className={`recipe-item-link ${isCurrentItem ? 'highlighted' : ''}`}
                             >
-                              {inputItem && (
-                                <Image
-                                  src={getImagePath(inputItem.localImagePath)}
-                                  alt={input}
-                                  width={32}
-                                  height={32}
-                                  className="recipe-item-img"
-                                />
+                              <ImageOrPlaceholder
+                                imagePath={inputItem?.localImagePath}
+                                alt={input.item}
+                                width={32}
+                                height={32}
+                                className="recipe-item-img"
+                              />
+                              <span>{input.item}</span>
+                              {input.quantity > 1 && (
+                                <span className="quantity-badge">×{input.quantity}</span>
                               )}
-                              <span>{input}</span>
                             </Link>
                           )
                         })}
@@ -185,17 +192,17 @@ export default async function ItemPage({ params }: ItemPageProps) {
                     <div className="recipe-facility">
                       <span className="recipe-label">Facility</span>
                       <div className="recipe-facility-info">
-                        {facility && (
-                          <Image
-                            src={getImagePath(facility.localImagePath)}
-                            alt={recipe.facility}
-                            width={32}
-                            height={32}
-                            className="recipe-facility-img"
-                          />
-                        )}
+                        <ImageOrPlaceholder
+                          imagePath={facility?.localImagePath}
+                          alt={recipe.facility}
+                          width={32}
+                          height={32}
+                          className="recipe-facility-img"
+                        />
                         <span>{recipe.facility}</span>
-                        <span className="recipe-time">⏱ {recipe.processingTime}s</span>
+                        {facilityTime != null && facilityTime > 0 && (
+                          <span className="recipe-time">⏱ {facilityTime}s</span>
+                        )}
                       </div>
                     </div>
 
@@ -207,18 +214,25 @@ export default async function ItemPage({ params }: ItemPageProps) {
                         href={outputItem ? `/items/${outputItem.id}` : '#'}
                         className="recipe-output-link"
                       >
-                        {outputItem && (
-                          <Image
-                            src={getImagePath(outputItem.localImagePath)}
-                            alt={recipe.output}
-                            width={32}
-                            height={32}
-                            className="recipe-item-img"
-                          />
-                        )}
+                        <ImageOrPlaceholder
+                          imagePath={outputItem?.localImagePath}
+                          alt={recipe.output}
+                          width={32}
+                          height={32}
+                          className="recipe-item-img"
+                        />
                         <span>{recipe.output}</span>
+                        {recipe.outputQuantity && recipe.outputQuantity > 1 && (
+                          <span className="quantity-badge">×{recipe.outputQuantity}</span>
+                        )}
                       </Link>
                     </div>
+
+                    {recipe.notes && (
+                      <div className="recipe-notes">
+                        <span className="recipe-notes-text">{recipe.notes}</span>
+                      </div>
+                    )}
                   </div>
                 )
               })}

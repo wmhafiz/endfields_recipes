@@ -1,9 +1,10 @@
 import React from 'react'
+import Link from 'next/link'
 import './styles.css'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description: 'Endfields Recipes - Item and production chain viewer',
+  title: 'Endfields Recipes',
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {
@@ -12,6 +13,21 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
+        <nav className="main-nav">
+          <div className="nav-content">
+            <Link href="/" className="nav-logo">
+              Endfields Recipes
+            </Link>
+            <div className="nav-links">
+              <Link href="/" className="nav-link">
+                Items
+              </Link>
+              <Link href="/facilities" className="nav-link">
+                Facilities
+              </Link>
+            </div>
+          </div>
+        </nav>
         <main>{children}</main>
       </body>
     </html>
