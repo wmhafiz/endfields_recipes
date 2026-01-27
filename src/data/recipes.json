@@ -438,67 +438,80 @@
     {
       "inputs": ["Amethyst Ore"],
       "facility": "Refining Unit",
-      "output": "Amethyst Fiber"
+      "output": "Amethyst Fiber",
+      "processingTime": 2
     },
     {
       "inputs": ["Amethyst Fiber"],
       "facility": "Fitting Unit",
-      "output": "Amethyst Part"
+      "output": "Amethyst Part",
+      "processingTime": 2
     },
     {
       "inputs": ["Originium Ore"],
       "facility": "Shredding Unit",
-      "output": "Originium Powder"
+      "output": "Originium Powder",
+      "processingTime": 2
     },
     {
       "inputs": ["Amethyst Part", "Originium Powder"],
       "facility": "Packaging Unit",
-      "output": "SC Valley Battery"
+      "output": "SC Valley Battery",
+      "processingTime": 10
     },
     {
       "inputs": ["Amethyst Fiber"],
       "facility": "Moulding Unit",
-      "output": "Amethyst Bottle"
+      "output": "Amethyst Bottle",
+      "processingTime": 3
     },
     {
       "inputs": ["Buckflower"],
       "facility": "Shredding Unit",
-      "output": "Buckflower Powder"
+      "output": "Buckflower Powder",
+      "processingTime": 2
     },
     {
       "inputs": ["Bottle", "Buckflower Powder"],
       "facility": "Filling Unit",
-      "output": "Buckflower Capsule"
+      "output": "Buckflower Capsule",
+      "processingTime": 5
     },
     {
       "inputs": ["Aketine"],
       "facility": "Shredding Unit",
-      "output": "Aketine Powder"
+      "output": "Aketine Powder",
+      "processingTime": 2
     },
     {
       "inputs": ["Aketine Seed"],
       "facility": "Planting Unit",
-      "output": "Aketine"
+      "output": "Aketine",
+      "processingTime": 2
     },
     {
       "inputs": ["Amethyst Part", "Aketine Powder"],
       "facility": "Packaging Unit",
-      "output": "Industrial Explosive"
+      "output": "Industrial Explosive",
+      "processingTime": 10
     },
     {
       "inputs": ["Acetine"],
       "facility": "Shredding Unit",
-      "output": "Acetine Powder"
+      "output": "Acetine Powder",
+      "processingTime": 2
     },
     {
       "inputs": ["Regenium Ore"],
       "facility": "Shredding Unit",
-      "output": "Originium Powder"
+      "output": "Originium Powder",
+      "processingTime": 2
     },
     {
       "inputs": ["Buckflower"],
       "facility": "Seed Picking Unit",
-      "output": "Buckflower Seed"
+      "output": "Buckflower Seed",
+      "processingTime": 1
     }
   ]
 }
