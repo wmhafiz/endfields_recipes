@@ -1,17 +1,19 @@
 'use client'
 
 import { memo } from 'react'
-import { Handle, Position, type NodeProps } from '@xyflow/react'
+import { Handle, Position, type NodeProps, type Node } from '@xyflow/react'
 import Image from 'next/image'
 
-export interface FacilityNodeData {
+export interface FacilityNodeData extends Record<string, unknown> {
   facilityName: string
   imagePath: string
   processingTime: number
 }
 
-function FacilityNodeComponent({ data }: NodeProps<{ data: FacilityNodeData }>) {
-  const nodeData = data as unknown as FacilityNodeData
+export type FacilityNodeType = Node<FacilityNodeData, 'facility'>
+
+function FacilityNodeComponent({ data }: NodeProps<FacilityNodeType>) {
+  const nodeData = data
 
   return (
     <div className="facility-node">
