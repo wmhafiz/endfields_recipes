@@ -1,0 +1,23 @@
+schema: spec-driven
+
+# Project context (optional)
+# This is shown to AI when creating artifacts.
+# Add your tech stack, conventions, style guides, domain knowledge, etc.
+context: |
+  Tech stack: TypeScript, NextJS 15, Payload CMS, PostgreSQL, Shadcn-ui, Tailwind CSS, React Flow
+  Style: ESLint with Prettier, strict TypeScript
+  Domain: Gaming site
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+rules:
+  proposal:
+    - Include rollback plan
+    - Keep proposals under 900 words
+    - Always include "Goals" and "Non-goals" section
+  specs:
+    - Use Given/When/Then format for scenarios
+  design:
+    - Include sequence diagrams for complex flows
+  tasks:
+    - Break tasks into chunks of max 4 hours
