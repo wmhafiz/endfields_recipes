@@ -55,7 +55,7 @@ export function ChainControls({
         <div className="chain-control-recipes">
           <span className="chain-control-label">Recipe Variants</span>
           <div className="chain-recipe-selectors">
-            {itemsWithMultipleRecipes.map(([itemName, count]) => {
+            {itemsWithMultipleRecipes.map(([itemName, _count]) => {
               const itemRecipes = recipes.filter((r) => r.output === itemName)
               const selectedIndex = selectedRecipes.get(itemName) ?? 0
 

@@ -1,10 +1,10 @@
 'use client'
 
 import { memo } from 'react'
-import { Handle, Position, type NodeProps } from '@xyflow/react'
+import { Handle, Position, type NodeProps, type Node } from '@xyflow/react'
 import Image from 'next/image'
 
-export interface ItemNodeData {
+export interface ItemNodeData extends Record<string, unknown> {
   itemName: string
   imagePath: string
   isRawMaterial: boolean
@@ -13,8 +13,10 @@ export interface ItemNodeData {
   hasInputs: boolean
 }
 
-function ItemNodeComponent({ id, data }: NodeProps<{ data: ItemNodeData }>) {
-  const nodeData = data as unknown as ItemNodeData
+export type ItemNodeType = Node<ItemNodeData, 'item'>
+
+function ItemNodeComponent({ id, data }: NodeProps<ItemNodeType>) {
+  const nodeData = data
 
   const handleCollapseClick = (e: React.MouseEvent) => {
     e.stopPropagation()
