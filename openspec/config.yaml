@@ -5,6 +5,7 @@ schema: spec-driven
 # Add your tech stack, conventions, style guides, domain knowledge, etc.
 context: |
   Tech stack: TypeScript, NextJS 15, Payload CMS, PostgreSQL, Shadcn-ui, Tailwind CSS, React Flow
+  Package Manager: PNPM
   Style: ESLint with Prettier, strict TypeScript
   Domain: Gaming site
 
