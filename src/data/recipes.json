@@ -1,5 +1,5 @@
 {
-  "totalItems": 72,
+  "totalItems": 82,
   "items": [
     {
       "id": "Originium_Ore",
@@ -19,37 +19,44 @@
     {
       "id": "Ferrium_Component",
       "name": "Ferrium Component",
-      "localImagePath": "images/items/Ferrium_Component.png"
+      "localImagePath": "images/items/Ferrium_Component.png",
+      "category": "AIC Products"
     },
     {
       "id": "HC_Valley_Battery",
       "name": "HC Valley Battery",
-      "localImagePath": "images/items/HC_Valley_Battery.png"
+      "localImagePath": "images/items/HC_Valley_Battery.png",
+      "category": "AIC Products"
     },
     {
       "id": "Jincao_Drink",
       "name": "Jincao Drink",
-      "localImagePath": "images/items/Jincao_Drink.png"
+      "localImagePath": "images/items/Jincao_Drink.png",
+      "category": "AIC Products"
     },
     {
       "id": "LC_Wuling_Battery",
       "name": "LC Wuling Battery",
-      "localImagePath": "images/items/LC_Wuling_Battery.png"
+      "localImagePath": "images/items/LC_Wuling_Battery.png",
+      "category": "AIC Products"
     },
     {
       "id": "SC_Valley_Battery",
       "name": "SC Valley Battery",
-      "localImagePath": "images/items/SC_Valley_Battery.png"
+      "localImagePath": "images/items/SC_Valley_Battery.png",
+      "category": "AIC Products"
     },
     {
       "id": "Xiranite_Component",
       "name": "Xiranite Component",
-      "localImagePath": "images/items/Xiranite_Component.png"
+      "localImagePath": "images/items/Xiranite_Component.png",
+      "category": "AIC Products"
     },
     {
       "id": "Yazhen_Syringe__C_",
       "name": "Yazhen Syringe [C]",
-      "localImagePath": "images/items/Yazhen_Syringe__C_.png"
+      "localImagePath": "images/items/Yazhen_Syringe__C_.png",
+      "category": "AIC Products"
     },
     {
       "id": "Bumper_Rich",
@@ -59,207 +66,248 @@
     {
       "id": "Jincao",
       "name": "Jincao",
-      "localImagePath": "images/items/Jincao.png"
+      "localImagePath": "images/items/Jincao.png",
+      "category": "AIC Products"
     },
     {
       "id": "Yazhen",
       "name": "Yazhen",
-      "localImagePath": "images/items/Yazhen.png"
+      "localImagePath": "images/items/Yazhen.png",
+      "category": "AIC Products"
     },
     {
       "id": "Dense_Ferrium_Powder",
       "name": "Dense Ferrium Powder",
-      "localImagePath": "images/items/Dense_Ferrium_Powder.png"
+      "localImagePath": "images/items/Dense_Ferrium_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Dense_Originium_Powder",
       "name": "Dense Originium Powder",
-      "localImagePath": "images/items/Dense_Originium_Powder.png"
+      "localImagePath": "images/items/Dense_Originium_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Dense_Origocrust_Powder",
       "name": "Dense Origocrust Powder",
-      "localImagePath": "images/items/Dense_Origocrust_Powder.png"
+      "localImagePath": "images/items/Dense_Origocrust_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Ferrium",
       "name": "Ferrium",
-      "localImagePath": "images/items/Ferrium.png"
+      "localImagePath": "images/items/Ferrium.png",
+      "category": "AIC Products"
     },
     {
       "id": "Ferrium_Bottle",
       "name": "Ferrium Bottle",
-      "localImagePath": "images/items/Ferrium_Bottle.png"
+      "localImagePath": "images/items/Ferrium_Bottle.png",
+      "category": "AIC Products"
     },
     {
       "id": "Ferrium_Part",
       "name": "Ferrium Part",
-      "localImagePath": "images/items/Ferrium_Part.png"
+      "localImagePath": "images/items/Ferrium_Part.png",
+      "category": "AIC Products"
     },
     {
       "id": "Originium_Powder",
       "name": "Originium Powder",
-      "localImagePath": "images/items/Originium_Powder.png"
+      "localImagePath": "images/items/Originium_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Origocrust",
       "name": "Origocrust",
-      "localImagePath": "images/items/Origocrust.png"
+      "localImagePath": "images/items/Origocrust.png",
+      "category": "AIC Products"
     },
     {
       "id": "Origocrust_Powder",
       "name": "Origocrust Powder",
-      "localImagePath": "images/items/Origocrust_Powder.png"
+      "localImagePath": "images/items/Origocrust_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Packed_Origocrust",
       "name": "Packed Origocrust",
-      "localImagePath": "images/items/Packed_Origocrust.png"
+      "localImagePath": "images/items/Packed_Origocrust.png",
+      "category": "AIC Products"
     },
     {
       "id": "Steel",
       "name": "Steel",
-      "localImagePath": "images/items/Steel.png"
+      "localImagePath": "images/items/Steel.png",
+      "category": "AIC Products"
     },
     {
       "id": "Steel_Bottle",
       "name": "Steel Bottle",
-      "localImagePath": "images/items/Steel_Bottle.png"
+      "localImagePath": "images/items/Steel_Bottle.png",
+      "category": "AIC Products"
     },
     {
       "id": "Steel_Part",
       "name": "Steel Part",
-      "localImagePath": "images/items/Steel_Part.png"
+      "localImagePath": "images/items/Steel_Part.png",
+      "category": "AIC Products"
     },
     {
       "id": "Amethyst_Component",
       "name": "Amethyst Component",
-      "localImagePath": "images/items/Amethyst_Component.png"
+      "localImagePath": "images/items/Amethyst_Component.png",
+      "category": "AIC Products"
     },
     {
       "id": "Buck_Capsule__A_",
       "name": "Buck Capsule [A]",
-      "localImagePath": "images/items/Buck_Capsule__A_.png"
+      "localImagePath": "images/items/Buck_Capsule__A_.png",
+      "category": "AIC Products"
     },
     {
       "id": "Buck_Capsule__B_",
       "name": "Buck Capsule [B]",
-      "localImagePath": "images/items/Buck_Capsule__B_.png"
+      "localImagePath": "images/items/Buck_Capsule__B_.png",
+      "category": "AIC Products"
     },
     {
       "id": "Canned_Citrome__A_",
       "name": "Canned Citrome [A]",
-      "localImagePath": "images/items/Canned_Citrome__A_.png"
+      "localImagePath": "images/items/Canned_Citrome__A_.png",
+      "category": "AIC Products"
     },
     {
       "id": "Canned_Citrome__B_",
       "name": "Canned Citrome [B]",
-      "localImagePath": "images/items/Canned_Citrome__B_.png"
+      "localImagePath": "images/items/Canned_Citrome__B_.png",
+      "category": "AIC Products"
     },
     {
       "id": "Cryston_Component",
       "name": "Cryston Component",
-      "localImagePath": "images/items/Cryston_Component.png"
+      "localImagePath": "images/items/Cryston_Component.png",
+      "category": "AIC Products"
     },
     {
       "id": "LC_Valley_Battery",
       "name": "LC Valley Battery",
-      "localImagePath": "images/items/LC_Valley_Battery.png"
+      "localImagePath": "images/items/LC_Valley_Battery.png",
+      "category": "AIC Products"
     },
     {
       "id": "Aketine",
       "name": "Aketine",
-      "localImagePath": "images/items/Aketine.png"
+      "localImagePath": "images/items/Aketine.png",
+      "category": "AIC Products"
     },
     {
       "id": "Aketine_Seed",
       "name": "Aketine Seed",
-      "localImagePath": "images/items/Aketine_Seed.png"
+      "localImagePath": "images/items/Aketine_Seed.png",
+      "category": "AIC Products"
     },
     {
       "id": "Amber_Rice_Seed",
       "name": "Amber Rice Seed",
-      "localImagePath": "images/items/Amber_Rice_Seed.png"
+      "localImagePath": "images/items/Amber_Rice_Seed.png",
+      "category": "AIC Products"
     },
     {
       "id": "Amethyst_Fiber",
       "name": "Amethyst Fiber",
-      "localImagePath": "images/items/Amethyst_Fiber.png"
+      "localImagePath": "images/items/Amethyst_Fiber.png",
+      "category": "AIC Products"
     },
     {
       "id": "Amethyst_Powder",
       "name": "Amethyst Powder",
-      "localImagePath": "images/items/Amethyst_Powder.png"
+      "localImagePath": "images/items/Amethyst_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Buckflower",
       "name": "Buckflower",
-      "localImagePath": "images/items/Buckflower.png"
+      "localImagePath": "images/items/Buckflower.png",
+      "category": "AIC Products"
     },
     {
       "id": "Buckflower_Seed",
       "name": "Buckflower Seed",
-      "localImagePath": "images/items/Buckflower_Seed.png"
+      "localImagePath": "images/items/Buckflower_Seed.png",
+      "category": "AIC Products"
     },
     {
       "id": "Citrome",
       "name": "Citrome",
-      "localImagePath": "images/items/Citrome.png"
+      "localImagePath": "images/items/Citrome.png",
+      "category": "AIC Products"
     },
     {
       "id": "Citrome_Seed",
       "name": "Citrome Seed",
-      "localImagePath": "images/items/Citrome_Seed.png"
+      "localImagePath": "images/items/Citrome_Seed.png",
+      "category": "AIC Products"
     },
     {
       "id": "Ferrium_Powder",
       "name": "Ferrium Powder",
-      "localImagePath": "images/items/Ferrium_Powder.png"
+      "localImagePath": "images/items/Ferrium_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Jincao_Powder",
       "name": "Jincao Powder",
-      "localImagePath": "images/items/Jincao_Powder.png"
+      "localImagePath": "images/items/Jincao_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Jincao_Seed",
       "name": "Jincao Seed",
-      "localImagePath": "images/items/Jincao_Seed.png"
+      "localImagePath": "images/items/Jincao_Seed.png",
+      "category": "AIC Products"
     },
     {
       "id": "Jincao_Solution",
       "name": "Jincao Solution",
-      "localImagePath": "images/items/Jincao_Solution.png"
+      "localImagePath": "images/items/Jincao_Solution.png",
+      "category": "AIC Products"
     },
     {
       "id": "Liquid_Xiranite",
       "name": "Liquid Xiranite",
-      "localImagePath": "images/items/Liquid_Xiranite.png"
+      "localImagePath": "images/items/Liquid_Xiranite.png",
+      "category": "AIC Products"
     },
     {
       "id": "Redjade_Ginseng_Seed",
       "name": "Redjade Ginseng Seed",
-      "localImagePath": "images/items/Redjade_Ginseng_Seed.png"
+      "localImagePath": "images/items/Redjade_Ginseng_Seed.png",
+      "category": "AIC Products"
     },
     {
       "id": "Reed_Rye_Seed",
       "name": "Reed Rye Seed",
-      "localImagePath": "images/items/Reed_Rye_Seed.png"
+      "localImagePath": "images/items/Reed_Rye_Seed.png",
+      "category": "AIC Products"
     },
     {
       "id": "Sandleaf",
       "name": "Sandleaf",
-      "localImagePath": "images/items/Sandleaf.png"
+      "localImagePath": "images/items/Sandleaf.png",
+      "category": "AIC Products"
     },
     {
       "id": "Sandleaf_Seed",
       "name": "Sandleaf Seed",
-      "localImagePath": "images/items/Sandleaf_Seed.png"
+      "localImagePath": "images/items/Sandleaf_Seed.png",
+      "category": "AIC Products"
     },
     {
       "id": "Tartpepper_Seed",
       "name": "Tartpepper Seed",
-      "localImagePath": "images/items/Tartpepper_Seed.png"
+      "localImagePath": "images/items/Tartpepper_Seed.png",
+      "category": "AIC Products"
     },
     {
       "id": "Xiranite",
@@ -269,249 +317,842 @@
     {
       "id": "Yazhen_Powder",
       "name": "Yazhen Powder",
-      "localImagePath": "images/items/Yazhen_Powder.png"
+      "localImagePath": "images/items/Yazhen_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Yazhen_Seed",
       "name": "Yazhen Seed",
-      "localImagePath": "images/items/Yazhen_Seed.png"
+      "localImagePath": "images/items/Yazhen_Seed.png",
+      "category": "AIC Products"
     },
     {
       "id": "Yazhen_Solution",
       "name": "Yazhen Solution",
-      "localImagePath": "images/items/Yazhen_Solution.png"
+      "localImagePath": "images/items/Yazhen_Solution.png",
+      "category": "AIC Products"
     },
     {
       "id": "Aketine_Powder",
       "name": "Aketine Powder",
-      "localImagePath": "images/items/Aketine_Powder.png"
+      "localImagePath": "images/items/Aketine_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Amethyst_Bottle",
       "name": "Amethyst Bottle",
-      "localImagePath": "images/items/Amethyst_Bottle.png"
+      "localImagePath": "images/items/Amethyst_Bottle.png",
+      "category": "AIC Products"
     },
     {
       "id": "Amethyst_Part",
       "name": "Amethyst Part",
-      "localImagePath": "images/items/Amethyst_Part.png"
+      "localImagePath": "images/items/Amethyst_Part.png",
+      "category": "AIC Products"
     },
     {
       "id": "Buckflower_Powder",
       "name": "Buckflower Powder",
-      "localImagePath": "images/items/Buckflower_Powder.png"
+      "localImagePath": "images/items/Buckflower_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Carbon",
       "name": "Carbon",
-      "localImagePath": "images/items/Carbon.png"
+      "localImagePath": "images/items/Carbon.png",
+      "category": "AIC Products"
     },
     {
       "id": "Carbon_Powder",
       "name": "Carbon Powder",
-      "localImagePath": "images/items/Carbon_Powder.png"
+      "localImagePath": "images/items/Carbon_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Citrome_Powder",
       "name": "Citrome Powder",
-      "localImagePath": "images/items/Citrome_Powder.png"
+      "localImagePath": "images/items/Citrome_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Cryston_Bottle",
       "name": "Cryston Bottle",
-      "localImagePath": "images/items/Cryston_Bottle.png"
+      "localImagePath": "images/items/Cryston_Bottle.png",
+      "category": "AIC Products"
     },
     {
       "id": "Cryston_Fiber",
       "name": "Cryston Fiber",
-      "localImagePath": "images/items/Cryston_Fiber.png"
+      "localImagePath": "images/items/Cryston_Fiber.png",
+      "category": "AIC Products"
     },
     {
       "id": "Cryston_Part",
       "name": "Cryston Part",
-      "localImagePath": "images/items/Cryston_Part.png"
+      "localImagePath": "images/items/Cryston_Part.png",
+      "category": "AIC Products"
     },
     {
       "id": "Cryston_Powder",
       "name": "Cryston Powder",
-      "localImagePath": "images/items/Cryston_Powder.png"
+      "localImagePath": "images/items/Cryston_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Dense_Carbon_Powder",
       "name": "Dense Carbon Powder",
-      "localImagePath": "images/items/Dense_Carbon_Powder.png"
+      "localImagePath": "images/items/Dense_Carbon_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Ground_Buckflower_Powder",
       "name": "Ground Buckflower Powder",
-      "localImagePath": "images/items/Ground_Buckflower_Powder.png"
+      "localImagePath": "images/items/Ground_Buckflower_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Ground_Citrome_Powder",
       "name": "Ground Citrome Powder",
-      "localImagePath": "images/items/Ground_Citrome_Powder.png"
+      "localImagePath": "images/items/Ground_Citrome_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Sandleaf_Powder",
       "name": "Sandleaf Powder",
-      "localImagePath": "images/items/Sandleaf_Powder.png"
+      "localImagePath": "images/items/Sandleaf_Powder.png",
+      "category": "AIC Products"
     },
     {
       "id": "Stabilized_Carbon",
       "name": "Stabilized Carbon",
-      "localImagePath": "images/items/Stabilized_Carbon.png"
+      "localImagePath": "images/items/Stabilized_Carbon.png",
+      "category": "AIC Products"
     },
     {
       "id": "Buck_Capsule__C_",
       "name": "Buck Capsule [C]",
-      "localImagePath": "images/items/Buck_Capsule__C_.png"
+      "localImagePath": "images/items/Buck_Capsule__C_.png",
+      "category": "AIC Products"
     },
     {
       "id": "Canned_Citrome__C_",
       "name": "Canned Citrome [C]",
-      "localImagePath": "images/items/Canned_Citrome__C_.png"
+      "localImagePath": "images/items/Canned_Citrome__C_.png",
+      "category": "AIC Products"
     },
     {
       "id": "Industrial_Explosive",
       "name": "Industrial Explosive",
-      "localImagePath": "images/items/Industrial_Explosive.png"
+      "localImagePath": "images/items/Industrial_Explosive.png",
+      "category": "AIC Products"
+    },
+    {
+      "id": "Wood",
+      "name": "Wood"
+    },
+    {
+      "id": "Clean_Water",
+      "name": "Clean Water"
+    },
+    {
+      "id": "Redjade_Ginseng",
+      "name": "Redjade Ginseng"
+    },
+    {
+      "id": "Reed_Rye",
+      "name": "Reed Rye"
+    },
+    {
+      "id": "Tartpepper",
+      "name": "Tartpepper"
+    },
+    {
+      "id": "Amber_Rice",
+      "name": "Amber Rice"
+    },
+    {
+      "id": "Dense_Origocrust",
+      "name": "Dense Origocrust",
+      "category": "AIC Products"
     }
   ],
   "facilities": [
     {
       "id": "Portable_Originium_Rig",
       "name": "Portable Originium Rig",
-      "localImagePath": "images/facilities/Portable_Originium_Rig.png"
+      "localImagePath": "images/facilities/Portable_Originium_Rig.png",
+      "category": "Resourcing",
+      "description": "Mining"
     },
     {
       "id": "Electric_Mining_Rig_Mk",
       "name": "Electric Mining Rig Mk",
-      "localImagePath": "images/facilities/Electric_Mining_Rig_Mk.png"
+      "localImagePath": "images/facilities/Electric_Mining_Rig.png",
+      "category": "Resourcing",
+      "description": "Mining"
     },
     {
       "id": "Electric_Mining_Rig_Mk_II",
       "name": "Electric Mining Rig Mk II",
-      "localImagePath": "images/facilities/Electric_Mining_Rig_Mk_II.png"
+      "localImagePath": "images/facilities/Electric_Mining_Rig_Mk_II.png",
+      "category": "Resourcing",
+      "description": "Mining"
+    },
+    {
+      "id": "Fluid_Pump",
+      "name": "Fluid Pump",
+      "localImagePath": "images/facilities/Fluid_Pump.png",
+      "category": "Resourcing",
+      "description": "Fluid Gathering"
     },
     {
       "id": "Refining_Unit",
       "name": "Refining Unit",
-      "localImagePath": "images/facilities/Refining_Unit.png"
+      "localImagePath": "images/facilities/Refining_Unit.png",
+      "category": "Processing",
+      "processingTime": 2,
+      "description": "Refine natural resources into usable materials for advanced production."
     },
     {
       "id": "Fitting_Unit",
       "name": "Fitting Unit",
-      "localImagePath": "images/facilities/Fitting_Unit.png"
+      "localImagePath": "images/facilities/Fitting_Unit.png",
+      "category": "Processing",
+      "processingTime": 2,
+      "description": "Assemble components into functional items."
     },
     {
       "id": "Shredding_Unit",
       "name": "Shredding Unit",
-      "localImagePath": "images/facilities/Shredding_Unit.png"
+      "localImagePath": "images/facilities/Shredding_Unit.png",
+      "category": "Processing",
+      "processingTime": 2,
+      "description": "Convert plants and minerals into powders for advanced processing."
     },
     {
       "id": "Packaging_Unit",
       "name": "Packaging Unit",
-      "localImagePath": "images/facilities/Packaging_Unit.png"
+      "localImagePath": "images/facilities/Packaging_Unit.png",
+      "category": "Processing",
+      "processingTime": 10,
+      "description": "Pack a combination of various materials into a single package to create explosives and batteries."
     },
     {
       "id": "Seed_Picking_Unit",
       "name": "Seed Picking Unit",
-      "localImagePath": "images/facilities/Seed_Picking_Unit.png"
+      "localImagePath": "images/facilities/Seed-Picking_Unit.png",
+      "category": "Processing",
+      "processingTime": 2,
+      "description": "Harvest seeds from collected plants for planting in the Planting Unit."
     },
     {
-      "id": "Molding_Unit",
+      "id": "Moulding_Unit",
       "name": "Moulding Unit",
-      "localImagePath": "images/facilities/Molding_Unit.png"
+      "localImagePath": "images/facilities/Moulding_Unit.png",
+      "category": "Processing",
+      "processingTime": 2,
+      "description": "Produce bottles and containers for fluids and various other goods."
     },
     {
       "id": "Filling_Unit",
       "name": "Filling Unit",
-      "localImagePath": "images/facilities/Filling_Unit.png"
+      "localImagePath": "images/facilities/Filling_Unit.png",
+      "category": "Processing",
+      "processingTime": 2,
+      "description": "Fill containers with processed liquids and powders."
     },
     {
       "id": "Planting_Unit",
       "name": "Planting Unit",
-      "localImagePath": "images/facilities/Planting_Unit.png"
+      "localImagePath": "images/facilities/Planting_Unit.png",
+      "category": "Processing",
+      "processingTime": 2,
+      "description": "Cultivate various plants within the facility using special plots designed for different seeds."
+    },
+    {
+      "id": "Gearing_Unit",
+      "name": "Gearing Unit",
+      "localImagePath": "images/facilities/Gearing_Unit.png",
+      "category": "Processing",
+      "processingTime": 10,
+      "description": "Craft components for gear assembly from refined and processed minerals."
+    },
+    {
+      "id": "Grinding_Unit",
+      "name": "Grinding Unit",
+      "localImagePath": "images/facilities/Grinding_Unit.png",
+      "category": "Processing",
+      "processingTime": 2,
+      "description": "Combine various powders from the Shredding Unit into denser and finer powders."
     }
   ],
   "recipes": [
     {
-      "inputs": ["Amethyst Ore"],
+      "facility": "Refining Unit",
+      "output": "Packed Origocrust",
+      "inputs": [
+        { "item": "Dense Origocrust", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Steel",
+      "inputs": [
+        { "item": "Dense Ferrium Powder", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon Powder",
+      "inputs": [
+        { "item": "Sandleaf", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon Powder",
+      "inputs": [
+        { "item": "Buckflower Powder", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon Powder",
+      "inputs": [
+        { "item": "Citrome Powder", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon Powder",
+      "inputs": [
+        { "item": "Jincao Powder", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon Powder",
+      "inputs": [
+        { "item": "Yazhen Powder", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon",
+      "inputs": [
+        { "item": "Sandleaf", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon",
+      "inputs": [
+        { "item": "Yazhen", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon",
+      "inputs": [
+        { "item": "Buckflower", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon",
+      "inputs": [
+        { "item": "Citrome", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon",
+      "inputs": [
+        { "item": "Wood", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Carbon",
+      "inputs": [
+        { "item": "Jincao", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Dense Origocrust Powder",
+      "inputs": [
+        { "item": "Dense Originium Powder", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Stabilized Carbon",
+      "inputs": [
+        { "item": "Dense Carbon Powder", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Dense Carbon Powder",
+      "inputs": [
+        { "item": "Ground Buckflower Powder", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Dense Carbon Powder",
+      "inputs": [
+        { "item": "Ground Citrome Powder", "quantity": 1 }
+      ]
+    },
+    {
       "facility": "Refining Unit",
       "output": "Amethyst Fiber",
-      "processingTime": 2
+      "inputs": [
+        { "item": "Amethyst Powder", "quantity": 1 }
+      ]
     },
     {
-      "inputs": ["Amethyst Fiber"],
-      "facility": "Fitting Unit",
-      "output": "Amethyst Part",
-      "processingTime": 2
+      "facility": "Refining Unit",
+      "output": "Amethyst Fiber",
+      "inputs": [
+        { "item": "Amethyst Ore", "quantity": 1 }
+      ]
     },
     {
-      "inputs": ["Originium Ore"],
-      "facility": "Shredding Unit",
-      "output": "Originium Powder",
-      "processingTime": 2
+      "facility": "Refining Unit",
+      "output": "Origocrust",
+      "inputs": [
+        { "item": "Originium Ore", "quantity": 1 }
+      ]
     },
     {
-      "inputs": ["Amethyst Part", "Originium Powder"],
-      "facility": "Packaging Unit",
-      "output": "SC Valley Battery",
-      "processingTime": 10
+      "facility": "Refining Unit",
+      "output": "Origocrust",
+      "inputs": [
+        { "item": "Origocrust Powder", "quantity": 1 }
+      ]
     },
     {
-      "inputs": ["Amethyst Fiber"],
+      "facility": "Refining Unit",
+      "output": "Ferrium",
+      "inputs": [
+        { "item": "Ferrium Ore", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Ferrium",
+      "inputs": [
+        { "item": "Ferrium Powder", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Refining Unit",
+      "output": "Cryston Fiber",
+      "inputs": [
+        { "item": "Cryston Powder", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Moulding Unit",
+      "output": "Cryston Bottle",
+      "inputs": [
+        { "item": "Cryston Fiber", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Moulding Unit",
+      "output": "Steel Bottle",
+      "inputs": [
+        { "item": "Steel", "quantity": 1 }
+      ]
+    },
+    {
       "facility": "Moulding Unit",
       "output": "Amethyst Bottle",
-      "processingTime": 3
+      "inputs": [
+        { "item": "Amethyst Fiber", "quantity": 1 }
+      ]
     },
     {
-      "inputs": ["Buckflower"],
+      "facility": "Moulding Unit",
+      "output": "Ferrium Bottle",
+      "inputs": [
+        { "item": "Ferrium", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Gearing Unit",
+      "output": "Xiranite Component",
+      "inputs": [
+        { "item": "Xiranite", "quantity": 10 },
+        { "item": "Packed Origocrust", "quantity": 10 }
+      ]
+    },
+    {
+      "facility": "Gearing Unit",
+      "output": "Amethyst Component",
+      "inputs": [
+        { "item": "Amethyst Fiber", "quantity": 5 },
+        { "item": "Origocrust", "quantity": 5 }
+      ]
+    },
+    {
+      "facility": "Gearing Unit",
+      "output": "Ferrium Component",
+      "inputs": [
+        { "item": "Ferrium", "quantity": 10 },
+        { "item": "Origocrust", "quantity": 10 }
+      ]
+    },
+    {
+      "facility": "Gearing Unit",
+      "output": "Cryston Component",
+      "inputs": [
+        { "item": "Cryston Fiber", "quantity": 10 },
+        { "item": "Packed Origocrust", "quantity": 10 }
+      ]
+    },
+    {
       "facility": "Shredding Unit",
-      "output": "Buckflower Powder",
-      "processingTime": 2
+      "output": "Sandleaf Powder",
+      "inputs": [
+        { "item": "Sandleaf", "quantity": 1 }
+      ]
     },
     {
-      "inputs": ["Bottle", "Buckflower Powder"],
-      "facility": "Filling Unit",
-      "output": "Buckflower Capsule",
-      "processingTime": 5
-    },
-    {
-      "inputs": ["Aketine"],
-      "facility": "Shredding Unit",
-      "output": "Aketine Powder",
-      "processingTime": 2
-    },
-    {
-      "inputs": ["Aketine Seed"],
-      "facility": "Planting Unit",
-      "output": "Aketine",
-      "processingTime": 2
-    },
-    {
-      "inputs": ["Amethyst Part", "Aketine Powder"],
-      "facility": "Packaging Unit",
-      "output": "Industrial Explosive",
-      "processingTime": 10
-    },
-    {
-      "inputs": ["Acetine"],
-      "facility": "Shredding Unit",
-      "output": "Acetine Powder",
-      "processingTime": 2
-    },
-    {
-      "inputs": ["Regenium Ore"],
       "facility": "Shredding Unit",
       "output": "Originium Powder",
-      "processingTime": 2
+      "inputs": [
+        { "item": "Originium Ore", "quantity": 1 }
+      ]
     },
     {
-      "inputs": ["Buckflower"],
+      "facility": "Shredding Unit",
+      "output": "Amethyst Powder",
+      "inputs": [
+        { "item": "Amethyst Fiber", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Shredding Unit",
+      "output": "Carbon Powder",
+      "inputs": [
+        { "item": "Carbon", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Shredding Unit",
+      "output": "Aketine Powder",
+      "inputs": [
+        { "item": "Aketine", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Shredding Unit",
+      "output": "Origocrust Powder",
+      "inputs": [
+        { "item": "Origocrust", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Shredding Unit",
+      "output": "Ferrium Powder",
+      "inputs": [
+        { "item": "Ferrium", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Shredding Unit",
+      "output": "Jincao Powder",
+      "inputs": [
+        { "item": "Jincao", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Shredding Unit",
+      "output": "Yazhen Powder",
+      "inputs": [
+        { "item": "Yazhen", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Shredding Unit",
+      "output": "Buckflower Powder",
+      "inputs": [
+        { "item": "Buckflower", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Shredding Unit",
+      "output": "Citrome Powder",
+      "inputs": [
+        { "item": "Citrome", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Fitting Unit",
+      "output": "Amethyst Part",
+      "inputs": [
+        { "item": "Amethyst Fiber", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Fitting Unit",
+      "output": "Cryston Part",
+      "inputs": [
+        { "item": "Cryston Fiber", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Fitting Unit",
+      "output": "Ferrium Part",
+      "inputs": [
+        { "item": "Ferrium", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Fitting Unit",
+      "output": "Steel Part",
+      "inputs": [
+        { "item": "Steel", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Seed Picking Unit",
+      "output": "Sandleaf Seed",
+      "inputs": [
+        { "item": "Sandleaf", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Seed Picking Unit",
+      "output": "Yazhen Seed",
+      "inputs": [
+        { "item": "Yazhen", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Seed Picking Unit",
+      "output": "Citrome Seed",
+      "inputs": [
+        { "item": "Citrome", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Seed Picking Unit",
+      "output": "Redjade Ginseng Seed",
+      "inputs": [
+        { "item": "Redjade Ginseng", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Seed Picking Unit",
+      "output": "Aketine Seed",
+      "inputs": [
+        { "item": "Aketine", "quantity": 1 }
+      ]
+    },
+    {
       "facility": "Seed Picking Unit",
       "output": "Buckflower Seed",
-      "processingTime": 1
+      "inputs": [
+        { "item": "Buckflower", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Seed Picking Unit",
+      "output": "Jincao Seed",
+      "inputs": [
+        { "item": "Jincao", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Seed Picking Unit",
+      "output": "Reed Rye Seed",
+      "inputs": [
+        { "item": "Reed Rye", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Seed Picking Unit",
+      "output": "Tartpepper Seed",
+      "inputs": [
+        { "item": "Tartpepper", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Seed Picking Unit",
+      "output": "Amber Rice Seed",
+      "inputs": [
+        { "item": "Amber Rice", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Planting Unit",
+      "output": "Buckflower",
+      "outputQuantity": 1,
+      "inputs": [
+        { "item": "Buckflower Seed", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Planting Unit",
+      "output": "Sandleaf",
+      "outputQuantity": 1,
+      "inputs": [
+        { "item": "Sandleaf Seed", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Planting Unit",
+      "output": "Aketine",
+      "outputQuantity": 1,
+      "inputs": [
+        { "item": "Aketine Seed", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Planting Unit",
+      "output": "Citrome",
+      "outputQuantity": 1,
+      "inputs": [
+        { "item": "Citrome Seed", "quantity": 1 }
+      ]
+    },
+    {
+      "facility": "Planting Unit",
+      "output": "Jincao",
+      "outputQuantity": 2,
+      "inputs": [
+        { "item": "Jincao Seed", "quantity": 1 },
+        { "item": "Clean Water", "quantity": 1 }
+      ],
+      "notes": "Requires Fluid Mode"
+    },
+    {
+      "facility": "Planting Unit",
+      "output": "Yazhen",
+      "outputQuantity": 2,
+      "inputs": [
+        { "item": "Yazhen Seed", "quantity": 1 },
+        { "item": "Clean Water", "quantity": 1 }
+      ],
+      "notes": "Requires Fluid Mode"
+    },
+    {
+      "facility": "Packaging Unit",
+      "output": "HC Valley Battery",
+      "inputs": [
+        { "item": "Dense Originium Powder", "quantity": 15 },
+        { "item": "Steel Part", "quantity": 10 }
+      ]
+    },
+    {
+      "facility": "Packaging Unit",
+      "output": "Industrial Explosive",
+      "inputs": [
+        { "item": "Aketine Powder", "quantity": 1 },
+        { "item": "Amethyst Part", "quantity": 5 }
+      ]
+    },
+    {
+      "facility": "Packaging Unit",
+      "output": "LC Wuling Battery",
+      "inputs": [
+        { "item": "Dense Originium Powder", "quantity": 15 },
+        { "item": "Xiranite", "quantity": 5 }
+      ]
+    },
+    {
+      "facility": "Packaging Unit",
+      "output": "Yazhen Syringe [C]",
+      "inputs": [
+        { "item": "Ferrium Bottle", "quantity": 5 },
+        { "item": "Ferrium Part", "quantity": 10 }
+      ]
+    },
+    {
+      "facility": "Packaging Unit",
+      "output": "LC Valley Battery",
+      "inputs": [
+        { "item": "Originium Powder", "quantity": 10 },
+        { "item": "Amethyst Part", "quantity": 5 }
+      ]
+    },
+    {
+      "facility": "Packaging Unit",
+      "output": "SC Valley Battery",
+      "inputs": [
+        { "item": "Originium Powder", "quantity": 15 },
+        { "item": "Ferrium Part", "quantity": 10 }
+      ]
+    },
+    {
+      "facility": "Packaging Unit",
+      "output": "Jincao Drink",
+      "inputs": [
+        { "item": "Ferrium Bottle", "quantity": 5 },
+        { "item": "Ferrium Part", "quantity": 10 }
+      ]
+    },
+    {
+      "facility": "Grinding Unit",
+      "output": "Dense Origocrust Powder",
+      "inputs": [
+        { "item": "Sandleaf Powder", "quantity": 1 },
+        { "item": "Origocrust Powder", "quantity": 2 }
+      ]
+    },
+    {
+      "facility": "Grinding Unit",
+      "output": "Ground Citrome Powder",
+      "inputs": [
+        { "item": "Sandleaf Powder", "quantity": 1 },
+        { "item": "Citrome Powder", "quantity": 2 }
+      ]
+    },
+    {
+      "facility": "Grinding Unit",
+      "output": "Dense Ferrium Powder",
+      "inputs": [
+        { "item": "Sandleaf Powder", "quantity": 1 },
+        { "item": "Ferrium Powder", "quantity": 2 }
+      ]
+    },
+    {
+      "facility": "Grinding Unit",
+      "output": "Ground Buckflower Powder",
+      "inputs": [
+        { "item": "Sandleaf Powder", "quantity": 1 },
+        { "item": "Buckflower Powder", "quantity": 2 }
+      ]
+    },
+    {
+      "facility": "Grinding Unit",
+      "output": "Dense Carbon Powder",
+      "inputs": [
+        { "item": "Sandleaf Powder", "quantity": 1 },
+        { "item": "Carbon Powder", "quantity": 2 }
+      ]
+    },
+    {
+      "facility": "Grinding Unit",
+      "output": "Dense Originium Powder",
+      "inputs": [
+        { "item": "Sandleaf Powder", "quantity": 1 },
+        { "item": "Originium Powder", "quantity": 2 }
+      ]
+    },
+    {
+      "facility": "Grinding Unit",
+      "output": "Cryston Powder",
+      "inputs": [
+        { "item": "Sandleaf Powder", "quantity": 1 },
+        { "item": "Amethyst Powder", "quantity": 2 }
+      ]
     }
   ]
 }

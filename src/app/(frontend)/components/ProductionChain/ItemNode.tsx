@@ -2,15 +2,16 @@
 
 import { memo } from 'react'
 import { Handle, Position, type NodeProps, type Node } from '@xyflow/react'
-import Image from 'next/image'
+import { ImageOrPlaceholder } from '../ImageOrPlaceholder'
 
 export interface ItemNodeData extends Record<string, unknown> {
   itemName: string
-  imagePath: string
+  imagePath?: string
   isRawMaterial: boolean
   hiddenDescendants?: number
   onToggleCollapse?: (nodeId: string) => void
   hasInputs: boolean
+  quantity?: number
 }
 
 export type ItemNodeType = Node<ItemNodeData, 'item'>
@@ -29,14 +30,17 @@ function ItemNodeComponent({ id, data }: NodeProps<ItemNodeType>) {
 
       <div className="item-node-content">
         <div className="item-node-image-wrapper">
-          <Image
-            src={nodeData.imagePath}
+          <ImageOrPlaceholder
+            imagePath={nodeData.imagePath}
             alt={nodeData.itemName}
             width={48}
             height={48}
             className="item-node-image"
           />
           {nodeData.isRawMaterial && <span className="raw-material-badge">RAW</span>}
+          {nodeData.quantity && nodeData.quantity > 1 && (
+            <span className="quantity-badge">×{nodeData.quantity}</span>
+          )}
         </div>
         <span className="item-node-name">{nodeData.itemName}</span>
 

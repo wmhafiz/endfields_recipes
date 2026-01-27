@@ -1,28 +1,6 @@
-export interface Item {
-  id: string
-  name: string
-  localImagePath: string
-}
-
-export interface Facility {
-  id: string
-  name: string
-  localImagePath: string
-}
-
-export interface Recipe {
-  inputs: string[]
-  facility: string
-  output: string
-  processingTime: number
-}
-
-export interface RecipesData {
-  totalItems: number
-  items: Item[]
-  facilities: Facility[]
-  recipes: Recipe[]
-}
+// Import canonical types from shared types file
+export type { Item, Facility, Recipe, RecipeInput, RecipesData } from '../types/recipes'
+import type { Recipe, RecipesData } from '../types/recipes'
 
 export interface ChainNode {
   id: string
@@ -33,6 +11,7 @@ export interface ChainNode {
   processingTime?: number
   recipe?: Recipe
   hiddenDescendants?: number
+  quantity?: number
 }
 
 export interface ChainEdge {
@@ -87,6 +66,7 @@ export function buildProductionChain(
   function buildChainRecursive(
     currentItemName: string,
     depth: number,
+    quantity?: number,
   ): { nodeId: string; descendantCount: number } | null {
     // Cycle detection
     if (visited.has(currentItemName)) {
@@ -107,13 +87,14 @@ export function buildProductionChain(
     const itemNodeId = generateNodeId()
     const isRawMaterial = !recipe
 
-    // Create item node
+    // Create item node with quantity info
     nodes.push({
       id: itemNodeId,
       type: 'item',
       itemName: currentItemName,
       isRawMaterial,
       recipe,
+      quantity,
     })
 
     if (!recipe) {
@@ -122,14 +103,13 @@ export function buildProductionChain(
       return { nodeId: itemNodeId, descendantCount: 0 }
     }
 
-    // Create facility node
+    // Create facility node (processingTime is looked up from facility data at render time)
     const facilityNodeId = generateNodeId()
     nodes.push({
       id: facilityNodeId,
       type: 'facility',
       facilityName: recipe.facility,
       isRawMaterial: false,
-      processingTime: recipe.processingTime,
       recipe,
     })
 
@@ -142,9 +122,9 @@ export function buildProductionChain(
 
     let totalDescendants = 1 // Count the facility node
 
-    // Process each input
+    // Process each input (now with quantity)
     for (const input of recipe.inputs) {
-      const inputResult = buildChainRecursive(input, depth + 1)
+      const inputResult = buildChainRecursive(input.item, depth + 1, input.quantity)
 
       if (inputResult) {
         // Edge from input item to facility

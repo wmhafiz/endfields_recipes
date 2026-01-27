@@ -1,16 +1,10 @@
-import Image from 'next/image'
 import Link from 'next/link'
+import { ImageOrPlaceholder } from './ImageOrPlaceholder'
 
 interface ItemHeaderProps {
   id: string
   name: string
-  imagePath: string
-}
-
-function getImagePath(localPath: string): string {
-  if (localPath.startsWith('/')) return localPath
-  if (localPath.startsWith('./')) return localPath.replace('./', '/')
-  return `/${localPath}`
+  imagePath?: string
 }
 
 export function ItemHeader({ name, imagePath }: ItemHeaderProps) {
@@ -25,8 +19,8 @@ export function ItemHeader({ name, imagePath }: ItemHeaderProps) {
 
       <div className="item-detail-title">
         <div className="item-detail-image">
-          <Image
-            src={getImagePath(imagePath)}
+          <ImageOrPlaceholder
+            imagePath={imagePath}
             alt={name}
             width={80}
             height={80}
