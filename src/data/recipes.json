@@ -1,0 +1,504 @@
+{
+  "totalItems": 72,
+  "items": [
+    {
+      "id": "Originium_Ore",
+      "name": "Originium Ore",
+      "localImagePath": "images/ores/Originium_Ore.png"
+    },
+    {
+      "id": "Amethyst_Ore",
+      "name": "Amethyst Ore",
+      "localImagePath": "images/ores/Amethyst_Ore.png"
+    },
+    {
+      "id": "Ferrium_Ore",
+      "name": "Ferrium Ore",
+      "localImagePath": "images/ores/Ferrium_Ore.png"
+    },
+    {
+      "id": "Ferrium_Component",
+      "name": "Ferrium Component",
+      "localImagePath": "images/items/Ferrium_Component.png"
+    },
+    {
+      "id": "HC_Valley_Battery",
+      "name": "HC Valley Battery",
+      "localImagePath": "images/items/HC_Valley_Battery.png"
+    },
+    {
+      "id": "Jincao_Drink",
+      "name": "Jincao Drink",
+      "localImagePath": "images/items/Jincao_Drink.png"
+    },
+    {
+      "id": "LC_Wuling_Battery",
+      "name": "LC Wuling Battery",
+      "localImagePath": "images/items/LC_Wuling_Battery.png"
+    },
+    {
+      "id": "SC_Valley_Battery",
+      "name": "SC Valley Battery",
+      "localImagePath": "images/items/SC_Valley_Battery.png"
+    },
+    {
+      "id": "Xiranite_Component",
+      "name": "Xiranite Component",
+      "localImagePath": "images/items/Xiranite_Component.png"
+    },
+    {
+      "id": "Yazhen_Syringe__C_",
+      "name": "Yazhen Syringe [C]",
+      "localImagePath": "images/items/Yazhen_Syringe__C_.png"
+    },
+    {
+      "id": "Bumper_Rich",
+      "name": "Bumper-Rich",
+      "localImagePath": "images/items/Bumper_Rich.png"
+    },
+    {
+      "id": "Jincao",
+      "name": "Jincao",
+      "localImagePath": "images/items/Jincao.png"
+    },
+    {
+      "id": "Yazhen",
+      "name": "Yazhen",
+      "localImagePath": "images/items/Yazhen.png"
+    },
+    {
+      "id": "Dense_Ferrium_Powder",
+      "name": "Dense Ferrium Powder",
+      "localImagePath": "images/items/Dense_Ferrium_Powder.png"
+    },
+    {
+      "id": "Dense_Originium_Powder",
+      "name": "Dense Originium Powder",
+      "localImagePath": "images/items/Dense_Originium_Powder.png"
+    },
+    {
+      "id": "Dense_Origocrust_Powder",
+      "name": "Dense Origocrust Powder",
+      "localImagePath": "images/items/Dense_Origocrust_Powder.png"
+    },
+    {
+      "id": "Ferrium",
+      "name": "Ferrium",
+      "localImagePath": "images/items/Ferrium.png"
+    },
+    {
+      "id": "Ferrium_Bottle",
+      "name": "Ferrium Bottle",
+      "localImagePath": "images/items/Ferrium_Bottle.png"
+    },
+    {
+      "id": "Ferrium_Part",
+      "name": "Ferrium Part",
+      "localImagePath": "images/items/Ferrium_Part.png"
+    },
+    {
+      "id": "Originium_Powder",
+      "name": "Originium Powder",
+      "localImagePath": "images/items/Originium_Powder.png"
+    },
+    {
+      "id": "Origocrust",
+      "name": "Origocrust",
+      "localImagePath": "images/items/Origocrust.png"
+    },
+    {
+      "id": "Origocrust_Powder",
+      "name": "Origocrust Powder",
+      "localImagePath": "images/items/Origocrust_Powder.png"
+    },
+    {
+      "id": "Packed_Origocrust",
+      "name": "Packed Origocrust",
+      "localImagePath": "images/items/Packed_Origocrust.png"
+    },
+    {
+      "id": "Steel",
+      "name": "Steel",
+      "localImagePath": "images/items/Steel.png"
+    },
+    {
+      "id": "Steel_Bottle",
+      "name": "Steel Bottle",
+      "localImagePath": "images/items/Steel_Bottle.png"
+    },
+    {
+      "id": "Steel_Part",
+      "name": "Steel Part",
+      "localImagePath": "images/items/Steel_Part.png"
+    },
+    {
+      "id": "Amethyst_Component",
+      "name": "Amethyst Component",
+      "localImagePath": "images/items/Amethyst_Component.png"
+    },
+    {
+      "id": "Buck_Capsule__A_",
+      "name": "Buck Capsule [A]",
+      "localImagePath": "images/items/Buck_Capsule__A_.png"
+    },
+    {
+      "id": "Buck_Capsule__B_",
+      "name": "Buck Capsule [B]",
+      "localImagePath": "images/items/Buck_Capsule__B_.png"
+    },
+    {
+      "id": "Canned_Citrome__A_",
+      "name": "Canned Citrome [A]",
+      "localImagePath": "images/items/Canned_Citrome__A_.png"
+    },
+    {
+      "id": "Canned_Citrome__B_",
+      "name": "Canned Citrome [B]",
+      "localImagePath": "images/items/Canned_Citrome__B_.png"
+    },
+    {
+      "id": "Cryston_Component",
+      "name": "Cryston Component",
+      "localImagePath": "images/items/Cryston_Component.png"
+    },
+    {
+      "id": "LC_Valley_Battery",
+      "name": "LC Valley Battery",
+      "localImagePath": "images/items/LC_Valley_Battery.png"
+    },
+    {
+      "id": "Aketine",
+      "name": "Aketine",
+      "localImagePath": "images/items/Aketine.png"
+    },
+    {
+      "id": "Aketine_Seed",
+      "name": "Aketine Seed",
+      "localImagePath": "images/items/Aketine_Seed.png"
+    },
+    {
+      "id": "Amber_Rice_Seed",
+      "name": "Amber Rice Seed",
+      "localImagePath": "images/items/Amber_Rice_Seed.png"
+    },
+    {
+      "id": "Amethyst_Fiber",
+      "name": "Amethyst Fiber",
+      "localImagePath": "images/items/Amethyst_Fiber.png"
+    },
+    {
+      "id": "Amethyst_Powder",
+      "name": "Amethyst Powder",
+      "localImagePath": "images/items/Amethyst_Powder.png"
+    },
+    {
+      "id": "Buckflower",
+      "name": "Buckflower",
+      "localImagePath": "images/items/Buckflower.png"
+    },
+    {
+      "id": "Buckflower_Seed",
+      "name": "Buckflower Seed",
+      "localImagePath": "images/items/Buckflower_Seed.png"
+    },
+    {
+      "id": "Citrome",
+      "name": "Citrome",
+      "localImagePath": "images/items/Citrome.png"
+    },
+    {
+      "id": "Citrome_Seed",
+      "name": "Citrome Seed",
+      "localImagePath": "images/items/Citrome_Seed.png"
+    },
+    {
+      "id": "Ferrium_Powder",
+      "name": "Ferrium Powder",
+      "localImagePath": "images/items/Ferrium_Powder.png"
+    },
+    {
+      "id": "Jincao_Powder",
+      "name": "Jincao Powder",
+      "localImagePath": "images/items/Jincao_Powder.png"
+    },
+    {
+      "id": "Jincao_Seed",
+      "name": "Jincao Seed",
+      "localImagePath": "images/items/Jincao_Seed.png"
+    },
+    {
+      "id": "Jincao_Solution",
+      "name": "Jincao Solution",
+      "localImagePath": "images/items/Jincao_Solution.png"
+    },
+    {
+      "id": "Liquid_Xiranite",
+      "name": "Liquid Xiranite",
+      "localImagePath": "images/items/Liquid_Xiranite.png"
+    },
+    {
+      "id": "Redjade_Ginseng_Seed",
+      "name": "Redjade Ginseng Seed",
+      "localImagePath": "images/items/Redjade_Ginseng_Seed.png"
+    },
+    {
+      "id": "Reed_Rye_Seed",
+      "name": "Reed Rye Seed",
+      "localImagePath": "images/items/Reed_Rye_Seed.png"
+    },
+    {
+      "id": "Sandleaf",
+      "name": "Sandleaf",
+      "localImagePath": "images/items/Sandleaf.png"
+    },
+    {
+      "id": "Sandleaf_Seed",
+      "name": "Sandleaf Seed",
+      "localImagePath": "images/items/Sandleaf_Seed.png"
+    },
+    {
+      "id": "Tartpepper_Seed",
+      "name": "Tartpepper Seed",
+      "localImagePath": "images/items/Tartpepper_Seed.png"
+    },
+    {
+      "id": "Xiranite",
+      "name": "Xiranite",
+      "localImagePath": "images/items/Xiranite.png"
+    },
+    {
+      "id": "Yazhen_Powder",
+      "name": "Yazhen Powder",
+      "localImagePath": "images/items/Yazhen_Powder.png"
+    },
+    {
+      "id": "Yazhen_Seed",
+      "name": "Yazhen Seed",
+      "localImagePath": "images/items/Yazhen_Seed.png"
+    },
+    {
+      "id": "Yazhen_Solution",
+      "name": "Yazhen Solution",
+      "localImagePath": "images/items/Yazhen_Solution.png"
+    },
+    {
+      "id": "Aketine_Powder",
+      "name": "Aketine Powder",
+      "localImagePath": "images/items/Aketine_Powder.png"
+    },
+    {
+      "id": "Amethyst_Bottle",
+      "name": "Amethyst Bottle",
+      "localImagePath": "images/items/Amethyst_Bottle.png"
+    },
+    {
+      "id": "Amethyst_Part",
+      "name": "Amethyst Part",
+      "localImagePath": "images/items/Amethyst_Part.png"
+    },
+    {
+      "id": "Buckflower_Powder",
+      "name": "Buckflower Powder",
+      "localImagePath": "images/items/Buckflower_Powder.png"
+    },
+    {
+      "id": "Carbon",
+      "name": "Carbon",
+      "localImagePath": "images/items/Carbon.png"
+    },
+    {
+      "id": "Carbon_Powder",
+      "name": "Carbon Powder",
+      "localImagePath": "images/items/Carbon_Powder.png"
+    },
+    {
+      "id": "Citrome_Powder",
+      "name": "Citrome Powder",
+      "localImagePath": "images/items/Citrome_Powder.png"
+    },
+    {
+      "id": "Cryston_Bottle",
+      "name": "Cryston Bottle",
+      "localImagePath": "images/items/Cryston_Bottle.png"
+    },
+    {
+      "id": "Cryston_Fiber",
+      "name": "Cryston Fiber",
+      "localImagePath": "images/items/Cryston_Fiber.png"
+    },
+    {
+      "id": "Cryston_Part",
+      "name": "Cryston Part",
+      "localImagePath": "images/items/Cryston_Part.png"
+    },
+    {
+      "id": "Cryston_Powder",
+      "name": "Cryston Powder",
+      "localImagePath": "images/items/Cryston_Powder.png"
+    },
+    {
+      "id": "Dense_Carbon_Powder",
+      "name": "Dense Carbon Powder",
+      "localImagePath": "images/items/Dense_Carbon_Powder.png"
+    },
+    {
+      "id": "Ground_Buckflower_Powder",
+      "name": "Ground Buckflower Powder",
+      "localImagePath": "images/items/Ground_Buckflower_Powder.png"
+    },
+    {
+      "id": "Ground_Citrome_Powder",
+      "name": "Ground Citrome Powder",
+      "localImagePath": "images/items/Ground_Citrome_Powder.png"
+    },
+    {
+      "id": "Sandleaf_Powder",
+      "name": "Sandleaf Powder",
+      "localImagePath": "images/items/Sandleaf_Powder.png"
+    },
+    {
+      "id": "Stabilized_Carbon",
+      "name": "Stabilized Carbon",
+      "localImagePath": "images/items/Stabilized_Carbon.png"
+    },
+    {
+      "id": "Buck_Capsule__C_",
+      "name": "Buck Capsule [C]",
+      "localImagePath": "images/items/Buck_Capsule__C_.png"
+    },
+    {
+      "id": "Canned_Citrome__C_",
+      "name": "Canned Citrome [C]",
+      "localImagePath": "images/items/Canned_Citrome__C_.png"
+    },
+    {
+      "id": "Industrial_Explosive",
+      "name": "Industrial Explosive",
+      "localImagePath": "images/items/Industrial_Explosive.png"
+    }
+  ],
+  "facilities": [
+    {
+      "id": "Portable_Originium_Rig",
+      "name": "Portable Originium Rig",
+      "localImagePath": "images/facilities/Portable_Originium_Rig.png"
+    },
+    {
+      "id": "Electric_Mining_Rig_Mk",
+      "name": "Electric Mining Rig Mk",
+      "localImagePath": "images/facilities/Electric_Mining_Rig_Mk.png"
+    },
+    {
+      "id": "Electric_Mining_Rig_Mk_II",
+      "name": "Electric Mining Rig Mk II",
+      "localImagePath": "images/facilities/Electric_Mining_Rig_Mk_II.png"
+    },
+    {
+      "id": "Refining_Unit",
+      "name": "Refining Unit",
+      "localImagePath": "images/facilities/Refining_Unit.png"
+    },
+    {
+      "id": "Fitting_Unit",
+      "name": "Fitting Unit",
+      "localImagePath": "images/facilities/Fitting_Unit.png"
+    },
+    {
+      "id": "Shredding_Unit",
+      "name": "Shredding Unit",
+      "localImagePath": "images/facilities/Shredding_Unit.png"
+    },
+    {
+      "id": "Packaging_Unit",
+      "name": "Packaging Unit",
+      "localImagePath": "images/facilities/Packaging_Unit.png"
+    },
+    {
+      "id": "Seed_Picking_Unit",
+      "name": "Seed Picking Unit",
+      "localImagePath": "images/facilities/Seed_Picking_Unit.png"
+    },
+    {
+      "id": "Molding_Unit",
+      "name": "Moulding Unit",
+      "localImagePath": "images/facilities/Molding_Unit.png"
+    },
+    {
+      "id": "Filling_Unit",
+      "name": "Filling Unit",
+      "localImagePath": "images/facilities/Filling_Unit.png"
+    },
+    {
+      "id": "Planting_Unit",
+      "name": "Planting Unit",
+      "localImagePath": "images/facilities/Planting_Unit.png"
+    }
+  ],
+  "recipes": [
+    {
+      "inputs": ["Amethyst Ore"],
+      "facility": "Refining Unit",
+      "output": "Amethyst Fiber"
+    },
+    {
+      "inputs": ["Amethyst Fiber"],
+      "facility": "Fitting Unit",
+      "output": "Amethyst Part"
+    },
+    {
+      "inputs": ["Originium Ore"],
+      "facility": "Shredding Unit",
+      "output": "Originium Powder"
+    },
+    {
+      "inputs": ["Amethyst Part", "Originium Powder"],
+      "facility": "Packaging Unit",
+      "output": "SC Valley Battery"
+    },
+    {
+      "inputs": ["Amethyst Fiber"],
+      "facility": "Moulding Unit",
+      "output": "Amethyst Bottle"
+    },
+    {
+      "inputs": ["Buckflower"],
+      "facility": "Shredding Unit",
+      "output": "Buckflower Powder"
+    },
+    {
+      "inputs": ["Bottle", "Buckflower Powder"],
+      "facility": "Filling Unit",
+      "output": "Buckflower Capsule"
+    },
+    {
+      "inputs": ["Aketine"],
+      "facility": "Shredding Unit",
+      "output": "Aketine Powder"
+    },
+    {
+      "inputs": ["Aketine Seed"],
+      "facility": "Planting Unit",
+      "output": "Aketine"
+    },
+    {
+      "inputs": ["Amethyst Part", "Aketine Powder"],
+      "facility": "Packaging Unit",
+      "output": "Industrial Explosive"
+    },
+    {
+      "inputs": ["Acetine"],
+      "facility": "Shredding Unit",
+      "output": "Acetine Powder"
+    },
+    {
+      "inputs": ["Regenium Ore"],
+      "facility": "Shredding Unit",
+      "output": "Originium Powder"
+    },
+    {
+      "inputs": ["Buckflower"],
+      "facility": "Seed Picking Unit",
+      "output": "Buckflower Seed"
+    }
+  ]
+}
