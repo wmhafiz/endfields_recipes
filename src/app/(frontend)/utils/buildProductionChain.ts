@@ -1,17 +1,23 @@
 // Import canonical types from shared types file
-export type { Item, Facility, Recipe, RecipeInput, RecipesData } from '../types/recipes'
-import type { Recipe, RecipesData } from '../types/recipes'
+import type { EnrichedDbData, EnrichedRecipe, EnrichedItem } from '../types/recipes'
+
+// Re-export enriched types for convenience
+export type { EnrichedDbData, EnrichedRecipe, EnrichedItem }
 
 export interface ChainNode {
   id: string
   type: 'item' | 'facility'
+  itemId?: string
   itemName?: string
+  itemSlug?: string
   facilityName?: string
+  facilityImagePath?: string
   isRawMaterial: boolean
   processingTime?: number
-  recipe?: Recipe
+  recipe?: EnrichedRecipe
   hiddenDescendants?: number
   quantity?: number
+  localImagePath?: string
 }
 
 export interface ChainEdge {
@@ -27,30 +33,36 @@ export interface ProductionChain {
 }
 
 /**
- * Find all recipes that produce a given output
+ * Find all recipes that produce a given output by itemId
  */
-export function findRecipesForOutput(output: string, recipes: Recipe[]): Recipe[] {
-  return recipes.filter((recipe) => recipe.output === output)
+export function findRecipesForOutputById(
+  itemId: string,
+  recipes: EnrichedRecipe[],
+): EnrichedRecipe[] {
+  return recipes.filter((recipe) => recipe.outputs.some((o) => o.itemId === itemId))
 }
 
 /**
  * Find the first recipe that produces a given output (for default selection)
  */
-export function findRecipeForOutput(output: string, recipes: Recipe[]): Recipe | undefined {
-  return recipes.find((recipe) => recipe.output === output)
+export function findRecipeForOutputById(
+  itemId: string,
+  recipes: EnrichedRecipe[],
+): EnrichedRecipe | undefined {
+  return recipes.find((recipe) => recipe.outputs.some((o) => o.itemId === itemId))
 }
 
 /**
- * Build a production chain for an item
- * @param itemName - The name of the item to build the chain for
- * @param data - The recipes data
- * @param selectedRecipes - Map of item name to selected recipe index (for items with multiple recipes)
+ * Build a production chain for an item using itemId for identity
+ * @param itemId - The itemId of the item to build the chain for
+ * @param data - The enriched recipes data
+ * @param selectedRecipes - Map of itemId to selected recipe index (for items with multiple recipes)
  * @param maxDepth - Maximum depth to traverse (undefined = no limit)
  * @returns ProductionChain with nodes and edges
  */
 export function buildProductionChain(
-  itemName: string,
-  data: RecipesData,
+  itemId: string,
+  data: EnrichedDbData,
   selectedRecipes: Map<string, number> = new Map(),
   maxDepth?: number,
 ): ProductionChain {
@@ -59,17 +71,23 @@ export function buildProductionChain(
   const visited = new Set<string>()
   let nodeIdCounter = 0
 
+  // Build item lookup
+  const itemsById = new Map<string, EnrichedItem>()
+  for (const item of data.items) {
+    itemsById.set(item.itemId, item)
+  }
+
   function generateNodeId(): string {
     return `node-${nodeIdCounter++}`
   }
 
   function buildChainRecursive(
-    currentItemName: string,
+    currentItemId: string,
     depth: number,
     quantity?: number,
   ): { nodeId: string; descendantCount: number } | null {
-    // Cycle detection
-    if (visited.has(currentItemName)) {
+    // Cycle detection using itemId
+    if (visited.has(currentItemId)) {
       return null
     }
 
@@ -78,20 +96,24 @@ export function buildProductionChain(
       return null
     }
 
-    visited.add(currentItemName)
+    visited.add(currentItemId)
 
-    const availableRecipes = findRecipesForOutput(currentItemName, data.recipes)
-    const selectedIndex = selectedRecipes.get(currentItemName) ?? 0
+    const item = itemsById.get(currentItemId)
+    const availableRecipes = findRecipesForOutputById(currentItemId, data.recipes)
+    const selectedIndex = selectedRecipes.get(currentItemId) ?? 0
     const recipe = availableRecipes[selectedIndex] ?? availableRecipes[0]
 
     const itemNodeId = generateNodeId()
-    const isRawMaterial = !recipe
+    const isRawMaterial = item?.isRawMaterial ?? !recipe
 
     // Create item node with quantity info
     nodes.push({
       id: itemNodeId,
       type: 'item',
-      itemName: currentItemName,
+      itemId: currentItemId,
+      itemName: item?.itemName ?? currentItemId,
+      itemSlug: item?.slug,
+      localImagePath: item?.localImagePath,
       isRawMaterial,
       recipe,
       quantity,
@@ -99,18 +121,21 @@ export function buildProductionChain(
 
     if (!recipe) {
       // Raw material - no further dependencies
-      visited.delete(currentItemName)
+      visited.delete(currentItemId)
       return { nodeId: itemNodeId, descendantCount: 0 }
     }
 
-    // Create facility node (processingTime is looked up from facility data at render time)
+    // Create facility node
     const facilityNodeId = generateNodeId()
+    const craftTime = Number(recipe.craftTime)
     nodes.push({
       id: facilityNodeId,
       type: 'facility',
-      facilityName: recipe.facility,
+      facilityName: recipe.machineName,
+      facilityImagePath: recipe.machineImagePath,
       isRawMaterial: false,
       recipe,
+      processingTime: craftTime > 0 ? craftTime : undefined,
     })
 
     // Edge from facility to item (facility produces item)
@@ -122,9 +147,9 @@ export function buildProductionChain(
 
     let totalDescendants = 1 // Count the facility node
 
-    // Process each input (now with quantity)
-    for (const input of recipe.inputs) {
-      const inputResult = buildChainRecursive(input.item, depth + 1, input.quantity)
+    // Process each ingredient
+    for (const ingredient of recipe.ingredients) {
+      const inputResult = buildChainRecursive(ingredient.itemId, depth + 1, ingredient.count)
 
       if (inputResult) {
         // Edge from input item to facility
@@ -137,11 +162,11 @@ export function buildProductionChain(
       }
     }
 
-    visited.delete(currentItemName)
+    visited.delete(currentItemId)
     return { nodeId: itemNodeId, descendantCount: totalDescendants }
   }
 
-  const result = buildChainRecursive(itemName, 0)
+  const result = buildChainRecursive(itemId, 0)
 
   return {
     nodes,
