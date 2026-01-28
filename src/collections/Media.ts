@@ -11,6 +11,18 @@ export const Media: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    {
+      name: 'sourcePath',
+      type: 'text',
+      unique: true,
+      index: true,
+      admin: {
+        description:
+          'Original file path from seed data (e.g., images/items/Aketine.png). Used for deduplication during seeding.',
+      },
+    },
   ],
-  upload: true,
+  upload: {
+    mimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
+  },
 }

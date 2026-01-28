@@ -69,6 +69,9 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    items: Item;
+    machines: Machine;
+    recipes: Recipe;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +81,9 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    items: ItemsSelect<false> | ItemsSelect<true>;
+    machines: MachinesSelect<false> | MachinesSelect<true>;
+    recipes: RecipesSelect<false> | RecipesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -147,6 +153,10 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  /**
+   * Original file path from seed data (e.g., images/items/Aketine.png). Used for deduplication during seeding.
+   */
+  sourcePath?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -158,6 +168,133 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "items".
+ */
+export interface Item {
+  id: number;
+  /**
+   * Stable identifier from db.json (e.g., item_iron_cmpt)
+   */
+  itemId: string;
+  /**
+   * Display name for the item
+   */
+  itemName: string;
+  /**
+   * URL-safe identifier for routing
+   */
+  slug: string;
+  /**
+   * Whether this item is a raw/base material
+   */
+  isRawMaterial?: boolean | null;
+  /**
+   * Item image (optional)
+   */
+  image?: (number | null) | Media;
+  /**
+   * Original image path from db.json (kept for rollback)
+   */
+  localImagePath?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "machines".
+ */
+export interface Machine {
+  id: number;
+  /**
+   * Stable identifier (e.g., hub, fitting_unit, or "manual" for handcrafting)
+   */
+  machineId: string;
+  /**
+   * Display name for the machine
+   */
+  machineName: string;
+  /**
+   * Machine/facility image (optional)
+   */
+  image?: (number | null) | Media;
+  /**
+   * Original image path from db.json (kept for rollback)
+   */
+  machineImagePath?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recipes".
+ */
+export interface Recipe {
+  id: number;
+  /**
+   * Stable identifier from db.json (e.g., battle_cannon_1)
+   */
+  recipeId: string;
+  /**
+   * Display name for the recipe
+   */
+  name: string;
+  /**
+   * Recipe description (often empty)
+   */
+  description?: string | null;
+  /**
+   * Recipe type (e.g., hub, manual, facility)
+   */
+  type: string;
+  /**
+   * Recipe category (e.g., defense, handcraft)
+   */
+  category?: string | null;
+  /**
+   * The machine/facility used for this recipe
+   */
+  machine: number | Machine;
+  /**
+   * Input items required for this recipe
+   */
+  ingredients: {
+    item: number | Item;
+    count: number;
+    id?: string | null;
+  }[];
+  /**
+   * Output items produced by this recipe
+   */
+  outputs: {
+    item: number | Item;
+    count: number;
+    id?: string | null;
+  }[];
+  /**
+   * Recipe rarity level
+   */
+  rarity?: number | null;
+  /**
+   * Craft time in milliseconds
+   */
+  craftTime?: number | null;
+  /**
+   * Default unlock status (0 or 1)
+   */
+  defaultUnlock?: number | null;
+  /**
+   * Sort order for display
+   */
+  sortId?: number | null;
+  /**
+   * Whether recipe uses raw materials
+   */
+  usesRawMaterial?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -190,6 +327,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'items';
+        value: number | Item;
+      } | null)
+    | ({
+        relationTo: 'machines';
+        value: number | Machine;
+      } | null)
+    | ({
+        relationTo: 'recipes';
+        value: number | Recipe;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -261,6 +410,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  sourcePath?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -272,6 +422,65 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "items_select".
+ */
+export interface ItemsSelect<T extends boolean = true> {
+  itemId?: T;
+  itemName?: T;
+  slug?: T;
+  isRawMaterial?: T;
+  image?: T;
+  localImagePath?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "machines_select".
+ */
+export interface MachinesSelect<T extends boolean = true> {
+  machineId?: T;
+  machineName?: T;
+  image?: T;
+  machineImagePath?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recipes_select".
+ */
+export interface RecipesSelect<T extends boolean = true> {
+  recipeId?: T;
+  name?: T;
+  description?: T;
+  type?: T;
+  category?: T;
+  machine?: T;
+  ingredients?:
+    | T
+    | {
+        item?: T;
+        count?: T;
+        id?: T;
+      };
+  outputs?:
+    | T
+    | {
+        item?: T;
+        count?: T;
+        id?: T;
+      };
+  rarity?: T;
+  craftTime?: T;
+  defaultUnlock?: T;
+  sortId?: T;
+  usesRawMaterial?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
