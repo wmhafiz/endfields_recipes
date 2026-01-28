@@ -5,7 +5,9 @@ import { Handle, Position, type NodeProps, type Node } from '@xyflow/react'
 import { ImageOrPlaceholder } from '../ImageOrPlaceholder'
 
 export interface ItemNodeData extends Record<string, unknown> {
+  itemId: string
   itemName: string
+  itemSlug?: string
   imagePath?: string
   isRawMaterial: boolean
   hiddenDescendants?: number

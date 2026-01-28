@@ -13,11 +13,11 @@ import {
 import '@xyflow/react/dist/style.css'
 import { useRouter } from 'next/navigation'
 
-import { ItemNode } from './ItemNode'
+import { ItemNode, type ItemNodeData } from './ItemNode'
 import { FacilityNode } from './FacilityNode'
 import { ChainControls } from './ChainControls'
 import { useProductionChain } from './useProductionChain'
-import type { RecipesData } from '../../utils/buildProductionChain'
+import type { EnrichedDbData } from '../../types/recipes'
 
 const nodeTypes = {
   item: ItemNode,
@@ -25,12 +25,17 @@ const nodeTypes = {
 }
 
 interface ProductionChainProps {
-  itemName: string
-  data: RecipesData
+  itemSlug: string
+  data: EnrichedDbData
 }
 
-export function ProductionChain({ itemName, data }: ProductionChainProps) {
+export function ProductionChain({ itemSlug, data }: ProductionChainProps) {
   const router = useRouter()
+
+  // Find item by slug to get itemId
+  const item = useMemo(() => {
+    return data.items.find((i) => i.slug === itemSlug)
+  }, [data.items, itemSlug])
 
   // State for controls
   const [depthLimit, setDepthLimit] = useState<number | undefined>(undefined)
@@ -50,9 +55,13 @@ export function ProductionChain({ itemName, data }: ProductionChainProps) {
     })
   }, [])
 
-  // Build the production chain
-  const { nodes: initialNodes, edges: initialEdges, hasMultipleRecipes } = useProductionChain({
-    itemName,
+  // Build the production chain using itemId
+  const {
+    nodes: initialNodes,
+    edges: initialEdges,
+    hasMultipleRecipes,
+  } = useProductionChain({
+    itemId: item?.itemId ?? '',
     data,
     selectedRecipes,
     collapsedNodeIds,
@@ -69,28 +78,24 @@ export function ProductionChain({ itemName, data }: ProductionChainProps) {
     setEdges(initialEdges)
   }, [initialNodes, initialEdges, setNodes, setEdges])
 
-  // Handle node click - navigate to item page
+  // Handle node click - navigate to item page using slug
   const handleNodeClick: NodeMouseHandler = useCallback(
     (_, node) => {
       if (node.type === 'item' && node.data) {
-        const nodeData = node.data as { itemName?: string }
-        if (nodeData.itemName) {
-          // Find item ID by name
-          const item = data.items.find((i) => i.name === nodeData.itemName)
-          if (item) {
-            router.push(`/items/${item.id}`)
-          }
+        const nodeData = node.data as ItemNodeData
+        if (nodeData.itemSlug) {
+          router.push(`/items/${nodeData.itemSlug}`)
         }
       }
     },
-    [data.items, router],
+    [router],
   )
 
-  // Handle recipe selection
-  const handleRecipeChange = useCallback((itemNameKey: string, recipeIndex: number) => {
+  // Handle recipe selection (using itemId as key)
+  const handleRecipeChange = useCallback((itemIdKey: string, recipeIndex: number) => {
     setSelectedRecipes((prev) => {
       const next = new Map(prev)
-      next.set(itemNameKey, recipeIndex)
+      next.set(itemIdKey, recipeIndex)
       return next
     })
   }, [])
@@ -100,6 +105,10 @@ export function ProductionChain({ itemName, data }: ProductionChainProps) {
     setDepthLimit(newDepth)
   }, [])
 
+  if (!item) {
+    return <p className="no-recipes-text">Item not found.</p>
+  }
+
   return (
     <div className="production-chain-container">
       <ChainControls
@@ -108,7 +117,7 @@ export function ProductionChain({ itemName, data }: ProductionChainProps) {
         hasMultipleRecipes={hasMultipleRecipes}
         selectedRecipes={selectedRecipes}
         onRecipeChange={handleRecipeChange}
-        recipes={data.recipes}
+        data={data}
       />
 
       <div className="production-chain-flow">

@@ -6,7 +6,8 @@ import dagre from 'dagre'
 import {
   buildProductionChain,
   filterCollapsedNodes,
-  type RecipesData,
+  findRecipesForOutputById,
+  type EnrichedDbData,
   type ChainNode,
   type ChainEdge,
 } from '../../utils/buildProductionChain'
@@ -19,8 +20,8 @@ const FACILITY_NODE_WIDTH = 160
 const FACILITY_NODE_HEIGHT = 60
 
 interface UseProductionChainOptions {
-  itemName: string
-  data: RecipesData
+  itemId: string
+  data: EnrichedDbData
   selectedRecipes: Map<string, number>
   collapsedNodeIds: Set<string>
   maxDepth?: number
@@ -30,7 +31,7 @@ interface UseProductionChainOptions {
 interface UseProductionChainResult {
   nodes: Node[]
   edges: Edge[]
-  hasMultipleRecipes: Map<string, number> // item name -> recipe count
+  hasMultipleRecipes: Map<string, number> // itemId -> recipe count
 }
 
 function getImagePath(localPath: string): string {
@@ -39,10 +40,7 @@ function getImagePath(localPath: string): string {
   return `/${localPath}`
 }
 
-function applyDagreLayout(
-  nodes: Node[],
-  edges: Edge[],
-): { nodes: Node[]; edges: Edge[] } {
+function applyDagreLayout(nodes: Node[], edges: Edge[]): { nodes: Node[]; edges: Edge[] } {
   const g = new dagre.graphlib.Graph()
   g.setDefaultEdgeLabel(() => ({}))
   g.setGraph({ rankdir: 'LR', nodesep: 50, ranksep: 80 })
@@ -77,7 +75,7 @@ function applyDagreLayout(
 }
 
 export function useProductionChain({
-  itemName,
+  itemId,
   data,
   selectedRecipes,
   collapsedNodeIds,
@@ -85,8 +83,8 @@ export function useProductionChain({
   onToggleCollapse,
 }: UseProductionChainOptions): UseProductionChainResult {
   return useMemo(() => {
-    // Build the raw chain
-    const chain = buildProductionChain(itemName, data, selectedRecipes, maxDepth)
+    // Build the raw chain using itemId for identity
+    const chain = buildProductionChain(itemId, data, selectedRecipes, maxDepth)
 
     // Apply collapse filtering
     const { nodes: filteredChainNodes, edges: filteredChainEdges } = filterCollapsedNodes(
@@ -95,29 +93,27 @@ export function useProductionChain({
       collapsedNodeIds,
     )
 
-    // Track items with multiple recipes
+    // Track items with multiple recipes (by itemId)
     const hasMultipleRecipes = new Map<string, number>()
     for (const node of chain.nodes) {
-      if (node.type === 'item' && node.itemName) {
-        const recipeCount = data.recipes.filter((r) => r.output === node.itemName).length
+      if (node.type === 'item' && node.itemId) {
+        const recipeCount = findRecipesForOutputById(node.itemId, data.recipes).length
         if (recipeCount > 1) {
-          hasMultipleRecipes.set(node.itemName, recipeCount)
+          hasMultipleRecipes.set(node.itemId, recipeCount)
         }
       }
     }
 
     // Convert to React Flow nodes
-    const itemsByName = new Map(data.items.map((item) => [item.name, item]))
-    const facilitiesByName = new Map(data.facilities.map((f) => [f.name, f]))
-
     const reactFlowNodes: Node[] = filteredChainNodes.map((chainNode: ChainNode) => {
       if (chainNode.type === 'item') {
-        const item = itemsByName.get(chainNode.itemName!)
-        const hasInputs = data.recipes.some((r) => r.output === chainNode.itemName)
+        const hasInputs = findRecipesForOutputById(chainNode.itemId!, data.recipes).length > 0
 
         const nodeData: ItemNodeData = {
+          itemId: chainNode.itemId!,
           itemName: chainNode.itemName!,
-          imagePath: item?.localImagePath ? getImagePath(item.localImagePath) : undefined,
+          itemSlug: chainNode.itemSlug,
+          imagePath: chainNode.localImagePath ? getImagePath(chainNode.localImagePath) : undefined,
           isRawMaterial: chainNode.isRawMaterial,
           hiddenDescendants: chainNode.hiddenDescendants,
           onToggleCollapse,
@@ -132,14 +128,12 @@ export function useProductionChain({
           data: nodeData,
         }
       } else {
-        const facility = facilitiesByName.get(chainNode.facilityName!)
-        // Look up processingTime from facility data, not from recipe
-        const processingTime = facility?.processingTime
-
         const nodeData: FacilityNodeData = {
           facilityName: chainNode.facilityName!,
-          imagePath: facility?.localImagePath ? getImagePath(facility.localImagePath) : undefined,
-          processingTime,
+          imagePath: chainNode.facilityImagePath
+            ? getImagePath(chainNode.facilityImagePath)
+            : undefined,
+          processingTime: chainNode.processingTime,
         }
 
         return {
@@ -171,5 +165,5 @@ export function useProductionChain({
       edges: layoutedEdges,
       hasMultipleRecipes,
     }
-  }, [itemName, data, selectedRecipes, collapsedNodeIds, maxDepth, onToggleCollapse])
+  }, [itemId, data, selectedRecipes, collapsedNodeIds, maxDepth, onToggleCollapse])
 }

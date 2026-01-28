@@ -20,10 +20,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             </Link>
             <div className="nav-links">
               <Link href="/" className="nav-link">
-                Items
-              </Link>
-              <Link href="/facilities" className="nav-link">
-                Facilities
+                Recipes
               </Link>
             </div>
           </div>

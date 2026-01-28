@@ -1,9 +1,10 @@
 import React from 'react'
 
-import { ItemsDisplay } from './components/ItemsDisplay'
-import recipesData from '@/data/recipes.json'
+import { RecipeBrowser } from './components/RecipeBrowser'
+import dbData from '@/data/db.json'
+import type { EnrichedDbData } from './types/recipes'
 import './styles.css'
 
 export default function HomePage() {
-  return <ItemsDisplay data={recipesData} />
+  return <RecipeBrowser data={dbData as EnrichedDbData} />
 }

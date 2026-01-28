@@ -1209,3 +1209,91 @@ a.item-card {
   color: var(--color-text-muted);
   font-style: italic;
 }
+
+/* ==========================================
+   RECIPE BROWSER FILTERS
+   ========================================== */
+
+.recipe-filters {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.sort-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.sort-direction-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+
+  &:hover {
+    background: var(--color-surface-hover);
+    border-color: var(--color-accent);
+  }
+}
+
+.clear-filters-btn {
+  padding: 10px 16px;
+  background: transparent;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  color: var(--color-accent);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+
+  &:hover {
+    background: var(--color-accent);
+    color: white;
+  }
+}
+
+/* Recipe meta info for list view */
+.recipe-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.recipe-meta-separator {
+  color: var(--color-border);
+}
+
+.recipe-meta-item {
+  text-transform: capitalize;
+}
+
+/* Machine name in grid view */
+.recipe-machine-name {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
+

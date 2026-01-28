@@ -1,43 +1,51 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
-import recipesData from '@/data/recipes.json'
+import dbData from '@/data/db.json'
 import { ItemHeader } from '../../components/ItemHeader'
 import { ProductionChain } from '../../components/ProductionChain'
 import { ImageOrPlaceholder } from '../../components/ImageOrPlaceholder'
-import type { RecipesData } from '../../types/recipes'
+import type { EnrichedDbData, EnrichedItem } from '../../types/recipes'
 
 interface ItemPageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ slug: string }>
 }
 
 export default async function ItemPage({ params }: ItemPageProps) {
-  const { id } = await params
-  const data = recipesData as RecipesData
+  const { slug } = await params
+  const data = dbData as EnrichedDbData
 
-  // Find the item by ID
-  const item = data.items.find((i) => i.id === id)
+  // Build lookup maps
+  const itemsBySlug = new Map<string, EnrichedItem>()
+  const itemsById = new Map<string, EnrichedItem>()
+  for (const item of data.items) {
+    itemsBySlug.set(item.slug, item)
+    itemsById.set(item.itemId, item)
+  }
+
+  // Find the item by slug
+  const item = itemsBySlug.get(slug)
 
   if (!item) {
     notFound()
   }
 
-  // Find recipes that produce this item
-  const producedByRecipes = data.recipes.filter((r) => r.output === item.name)
+  // Find recipes that produce this item (by itemId)
+  const producedByRecipes = data.recipes.filter((r) =>
+    r.outputs.some((o) => o.itemId === item.itemId),
+  )
 
-  // Find recipes that use this item as input (now with quantified inputs)
-  const usedInRecipes = data.recipes.filter((r) => r.inputs.some((i) => i.item === item.name))
+  // Find recipes that use this item as input
+  const usedInRecipes = data.recipes.filter((r) =>
+    r.ingredients.some((i) => i.itemId === item.itemId),
+  )
 
-  // Check if this is a raw material (no recipe produces it)
-  const isRawMaterial = producedByRecipes.length === 0
-
-  // Get facility and item lookup maps
-  const facilitiesByName = new Map(data.facilities.map((f) => [f.name, f]))
-  const itemsByName = new Map(data.items.map((i) => [i.name, i]))
+  // Check if this is a raw material
+  const isRawMaterial = item.isRawMaterial
 
   return (
     <div className="item-detail-container">
-      <ItemHeader id={item.id} name={item.name} imagePath={item.localImagePath} />
+      <ItemHeader id={item.itemId} name={item.itemName} imagePath={item.localImagePath} />
 
       <main className="item-detail-content">
         {/* Production Chain Section */}
@@ -53,7 +61,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
               <p>This is a raw material with no crafting recipe.</p>
             </div>
           ) : (
-            <ProductionChain itemName={item.name} data={data} />
+            <ProductionChain itemSlug={item.slug} data={data} />
           )}
         </section>
 
@@ -62,32 +70,31 @@ export default async function ItemPage({ params }: ItemPageProps) {
           <section className="item-detail-section">
             <h2 className="section-title">Produced By</h2>
             <div className="recipe-cards">
-              {producedByRecipes.map((recipe, index) => {
-                const facility = facilitiesByName.get(recipe.facility)
-                const facilityTime = facility?.processingTime
+              {producedByRecipes.map((recipe) => {
+                const craftTime = Number(recipe.craftTime)
                 return (
-                  <div key={index} className="detail-recipe-card">
+                  <div key={recipe.id} className="detail-recipe-card">
                     <div className="recipe-inputs">
                       <span className="recipe-label">Inputs</span>
                       <div className="recipe-items">
-                        {recipe.inputs.map((input, i) => {
-                          const inputItem = itemsByName.get(input.item)
+                        {recipe.ingredients.map((ingredient, i) => {
+                          const ingredientItem = itemsById.get(ingredient.itemId)
                           return (
                             <Link
                               key={i}
-                              href={inputItem ? `/items/${inputItem.id}` : '#'}
+                              href={ingredientItem ? `/items/${ingredientItem.slug}` : '#'}
                               className="recipe-item-link"
                             >
                               <ImageOrPlaceholder
-                                imagePath={inputItem?.localImagePath}
-                                alt={input.item}
+                                imagePath={ingredientItem?.localImagePath}
+                                alt={ingredient.itemName}
                                 width={32}
                                 height={32}
                                 className="recipe-item-img"
                               />
-                              <span>{input.item}</span>
-                              {input.quantity > 1 && (
-                                <span className="quantity-badge">×{input.quantity}</span>
+                              <span>{ingredient.itemName}</span>
+                              {ingredient.count > 1 && (
+                                <span className="quantity-badge">×{ingredient.count}</span>
                               )}
                             </Link>
                           )
@@ -98,19 +105,10 @@ export default async function ItemPage({ params }: ItemPageProps) {
                     <div className="recipe-arrow">→</div>
 
                     <div className="recipe-facility">
-                      <span className="recipe-label">Facility</span>
+                      <span className="recipe-label">Machine</span>
                       <div className="recipe-facility-info">
-                        <ImageOrPlaceholder
-                          imagePath={facility?.localImagePath}
-                          alt={recipe.facility}
-                          width={32}
-                          height={32}
-                          className="recipe-facility-img"
-                        />
-                        <span>{recipe.facility}</span>
-                        {facilityTime != null && facilityTime > 0 && (
-                          <span className="recipe-time">⏱ {facilityTime}s</span>
-                        )}
+                        <span>{recipe.machineName}</span>
+                        {craftTime > 0 && <span className="recipe-time">⏱ {craftTime}s</span>}
                       </div>
                     </div>
 
@@ -121,23 +119,17 @@ export default async function ItemPage({ params }: ItemPageProps) {
                       <div className="recipe-output-info">
                         <ImageOrPlaceholder
                           imagePath={item.localImagePath}
-                          alt={item.name}
+                          alt={item.itemName}
                           width={32}
                           height={32}
                           className="recipe-item-img"
                         />
-                        <span>{item.name}</span>
-                        {recipe.outputQuantity && recipe.outputQuantity > 1 && (
-                          <span className="quantity-badge">×{recipe.outputQuantity}</span>
+                        <span>{item.itemName}</span>
+                        {recipe.outputs[0]?.count > 1 && (
+                          <span className="quantity-badge">×{recipe.outputs[0].count}</span>
                         )}
                       </div>
                     </div>
-
-                    {recipe.notes && (
-                      <div className="recipe-notes">
-                        <span className="recipe-notes-text">{recipe.notes}</span>
-                      </div>
-                    )}
                   </div>
                 )
               })}
@@ -152,34 +144,34 @@ export default async function ItemPage({ params }: ItemPageProps) {
             <p className="no-recipes-text">This item is not used in any recipes.</p>
           ) : (
             <div className="recipe-cards">
-              {usedInRecipes.map((recipe, index) => {
-                const facility = facilitiesByName.get(recipe.facility)
-                const facilityTime = facility?.processingTime
-                const outputItem = itemsByName.get(recipe.output)
+              {usedInRecipes.map((recipe) => {
+                const craftTime = Number(recipe.craftTime)
+                const primaryOutput = recipe.outputs[0]
+                const outputItem = primaryOutput ? itemsById.get(primaryOutput.itemId) : undefined
                 return (
-                  <div key={index} className="detail-recipe-card">
+                  <div key={recipe.id} className="detail-recipe-card">
                     <div className="recipe-inputs">
                       <span className="recipe-label">Inputs</span>
                       <div className="recipe-items">
-                        {recipe.inputs.map((input, i) => {
-                          const inputItem = itemsByName.get(input.item)
-                          const isCurrentItem = input.item === item.name
+                        {recipe.ingredients.map((ingredient, i) => {
+                          const ingredientItem = itemsById.get(ingredient.itemId)
+                          const isCurrentItem = ingredient.itemId === item.itemId
                           return (
                             <Link
                               key={i}
-                              href={inputItem ? `/items/${inputItem.id}` : '#'}
+                              href={ingredientItem ? `/items/${ingredientItem.slug}` : '#'}
                               className={`recipe-item-link ${isCurrentItem ? 'highlighted' : ''}`}
                             >
                               <ImageOrPlaceholder
-                                imagePath={inputItem?.localImagePath}
-                                alt={input.item}
+                                imagePath={ingredientItem?.localImagePath}
+                                alt={ingredient.itemName}
                                 width={32}
                                 height={32}
                                 className="recipe-item-img"
                               />
-                              <span>{input.item}</span>
-                              {input.quantity > 1 && (
-                                <span className="quantity-badge">×{input.quantity}</span>
+                              <span>{ingredient.itemName}</span>
+                              {ingredient.count > 1 && (
+                                <span className="quantity-badge">×{ingredient.count}</span>
                               )}
                             </Link>
                           )
@@ -190,19 +182,10 @@ export default async function ItemPage({ params }: ItemPageProps) {
                     <div className="recipe-arrow">→</div>
 
                     <div className="recipe-facility">
-                      <span className="recipe-label">Facility</span>
+                      <span className="recipe-label">Machine</span>
                       <div className="recipe-facility-info">
-                        <ImageOrPlaceholder
-                          imagePath={facility?.localImagePath}
-                          alt={recipe.facility}
-                          width={32}
-                          height={32}
-                          className="recipe-facility-img"
-                        />
-                        <span>{recipe.facility}</span>
-                        {facilityTime != null && facilityTime > 0 && (
-                          <span className="recipe-time">⏱ {facilityTime}s</span>
-                        )}
+                        <span>{recipe.machineName}</span>
+                        {craftTime > 0 && <span className="recipe-time">⏱ {craftTime}s</span>}
                       </div>
                     </div>
 
@@ -211,28 +194,22 @@ export default async function ItemPage({ params }: ItemPageProps) {
                     <div className="recipe-output">
                       <span className="recipe-label">Output</span>
                       <Link
-                        href={outputItem ? `/items/${outputItem.id}` : '#'}
+                        href={outputItem ? `/items/${outputItem.slug}` : '#'}
                         className="recipe-output-link"
                       >
                         <ImageOrPlaceholder
                           imagePath={outputItem?.localImagePath}
-                          alt={recipe.output}
+                          alt={primaryOutput?.itemName || recipe.name}
                           width={32}
                           height={32}
                           className="recipe-item-img"
                         />
-                        <span>{recipe.output}</span>
-                        {recipe.outputQuantity && recipe.outputQuantity > 1 && (
-                          <span className="quantity-badge">×{recipe.outputQuantity}</span>
+                        <span>{primaryOutput?.itemName || recipe.name}</span>
+                        {primaryOutput && primaryOutput.count > 1 && (
+                          <span className="quantity-badge">×{primaryOutput.count}</span>
                         )}
                       </Link>
                     </div>
-
-                    {recipe.notes && (
-                      <div className="recipe-notes">
-                        <span className="recipe-notes-text">{recipe.notes}</span>
-                      </div>
-                    )}
                   </div>
                 )
               })}
