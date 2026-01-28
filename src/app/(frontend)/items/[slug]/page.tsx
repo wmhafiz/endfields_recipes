@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
-import dbData from '@/data/db.json'
+import { getAllData } from '../../data/payload'
 import { ItemHeader } from '../../components/ItemHeader'
 import { ProductionChain } from '../../components/ProductionChain'
 import { ImageOrPlaceholder } from '../../components/ImageOrPlaceholder'
-import type { EnrichedDbData, EnrichedItem } from '../../types/recipes'
+import type { EnrichedItem } from '../../types/recipes'
 
 interface ItemPageProps {
   params: Promise<{ slug: string }>
@@ -13,7 +13,7 @@ interface ItemPageProps {
 
 export default async function ItemPage({ params }: ItemPageProps) {
   const { slug } = await params
-  const data = dbData as EnrichedDbData
+  const data = await getAllData()
 
   // Build lookup maps
   const itemsBySlug = new Map<string, EnrichedItem>()

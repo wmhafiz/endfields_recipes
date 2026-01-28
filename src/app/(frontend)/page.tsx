@@ -1,10 +1,10 @@
 import React from 'react'
 
 import { RecipeBrowser } from './components/RecipeBrowser'
-import dbData from '@/data/db.json'
-import type { EnrichedDbData } from './types/recipes'
+import { getAllData } from './data/payload'
 import './styles.css'
 
-export default function HomePage() {
-  return <RecipeBrowser data={dbData as EnrichedDbData} />
+export default async function HomePage() {
+  const data = await getAllData()
+  return <RecipeBrowser data={data} />
 }
