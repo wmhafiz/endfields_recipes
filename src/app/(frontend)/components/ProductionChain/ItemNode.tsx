@@ -14,6 +14,10 @@ export interface ItemNodeData extends Record<string, unknown> {
   onToggleCollapse?: (nodeId: string) => void
   hasInputs: boolean
   quantity?: number
+  // Planner-only (optional) overlay fields
+  neededPerMin?: number
+  yieldPerMin?: number
+  isBottleneck?: boolean
 }
 
 export type ItemNodeType = Node<ItemNodeData, 'item'>
@@ -27,7 +31,11 @@ function ItemNodeComponent({ id, data }: NodeProps<ItemNodeType>) {
   }
 
   return (
-    <div className={`item-node ${nodeData.isRawMaterial ? 'raw-material' : ''}`}>
+    <div
+      className={`item-node ${nodeData.isRawMaterial ? 'raw-material' : ''} ${
+        nodeData.isBottleneck ? 'bottleneck' : ''
+      }`}
+    >
       <Handle type="target" position={Position.Left} className="item-node-handle" />
 
       <div className="item-node-content">
@@ -45,6 +53,27 @@ function ItemNodeComponent({ id, data }: NodeProps<ItemNodeType>) {
           )}
         </div>
         <span className="item-node-name">{nodeData.itemName}</span>
+
+        {(typeof nodeData.neededPerMin === 'number' || nodeData.yieldPerMin != null) && (
+          <div className="item-node-rates">
+            <div className="item-node-rate-row">
+              <span className="item-node-rate-label">need</span>
+              <span className="item-node-rate-value">
+                {typeof nodeData.neededPerMin === 'number'
+                  ? `${nodeData.neededPerMin.toFixed(2)}/m`
+                  : '—'}
+              </span>
+            </div>
+            <div className="item-node-rate-row">
+              <span className="item-node-rate-label">yield</span>
+              <span className="item-node-rate-value">
+                {typeof nodeData.yieldPerMin === 'number'
+                  ? `${nodeData.yieldPerMin.toFixed(2)}/m`
+                  : 'unknown'}
+              </span>
+            </div>
+          </div>
+        )}
 
         {nodeData.hasInputs && !nodeData.isRawMaterial && (
           <button
