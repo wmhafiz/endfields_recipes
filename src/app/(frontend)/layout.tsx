@@ -22,6 +22,9 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
               <Link href="/" className="nav-link">
                 Recipes
               </Link>
+              <Link href="/planner" className="nav-link">
+                Planner
+              </Link>
             </div>
           </div>
         </nav>
