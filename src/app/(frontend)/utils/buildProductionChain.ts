@@ -11,13 +11,13 @@ export interface ChainNode {
   itemName?: string
   itemSlug?: string
   facilityName?: string
-  facilityImagePath?: string
+  facilityImageUrl?: string
   isRawMaterial: boolean
   processingTime?: number
   recipe?: EnrichedRecipe
   hiddenDescendants?: number
   quantity?: number
-  localImagePath?: string
+  imageUrl?: string
 }
 
 export interface ChainEdge {
@@ -113,7 +113,7 @@ export function buildProductionChain(
       itemId: currentItemId,
       itemName: item?.itemName ?? currentItemId,
       itemSlug: item?.slug,
-      localImagePath: item?.localImagePath,
+      imageUrl: item?.imageUrl,
       isRawMaterial,
       recipe,
       quantity,
@@ -125,17 +125,19 @@ export function buildProductionChain(
       return { nodeId: itemNodeId, descendantCount: 0 }
     }
 
-    // Create facility node
+    // Create facility node - craft time comes from the machine
     const facilityNodeId = generateNodeId()
-    const craftTime = Number(recipe.craftTime)
+    const craftTimeMs = recipe.machineCraftTime
+    // Convert ms to seconds for display
+    const craftTimeSeconds = craftTimeMs > 0 ? craftTimeMs / 1000 : undefined
     nodes.push({
       id: facilityNodeId,
       type: 'facility',
       facilityName: recipe.machineName,
-      facilityImagePath: recipe.machineImagePath,
+      facilityImageUrl: recipe.machineImageUrl,
       isRawMaterial: false,
       recipe,
-      processingTime: craftTime > 0 ? craftTime : undefined,
+      processingTime: craftTimeSeconds,
     })
 
     // Edge from facility to item (facility produces item)

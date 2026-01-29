@@ -34,10 +34,19 @@ interface UseProductionChainResult {
   hasMultipleRecipes: Map<string, number> // itemId -> recipe count
 }
 
-function getImagePath(localPath: string): string {
-  if (localPath.startsWith('/')) return localPath
-  if (localPath.startsWith('./')) return localPath.replace('./', '/')
-  return `/${localPath}`
+/**
+ * Normalize image path/URL for use in Next.js Image component.
+ * Handles both legacy local paths and media URLs.
+ */
+function normalizeImagePath(imagePath: string): string {
+  // If it's already a full URL (starts with http/https), use as-is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath
+  }
+  // For local paths, ensure leading slash
+  if (imagePath.startsWith('/')) return imagePath
+  if (imagePath.startsWith('./')) return imagePath.replace('./', '/')
+  return `/${imagePath}`
 }
 
 function applyDagreLayout(nodes: Node[], edges: Edge[]): { nodes: Node[]; edges: Edge[] } {
@@ -113,7 +122,7 @@ export function useProductionChain({
           itemId: chainNode.itemId!,
           itemName: chainNode.itemName!,
           itemSlug: chainNode.itemSlug,
-          imagePath: chainNode.localImagePath ? getImagePath(chainNode.localImagePath) : undefined,
+          imagePath: chainNode.imageUrl ? normalizeImagePath(chainNode.imageUrl) : undefined,
           isRawMaterial: chainNode.isRawMaterial,
           hiddenDescendants: chainNode.hiddenDescendants,
           onToggleCollapse,
@@ -130,8 +139,8 @@ export function useProductionChain({
       } else {
         const nodeData: FacilityNodeData = {
           facilityName: chainNode.facilityName!,
-          imagePath: chainNode.facilityImagePath
-            ? getImagePath(chainNode.facilityImagePath)
+          imagePath: chainNode.facilityImageUrl
+            ? normalizeImagePath(chainNode.facilityImageUrl)
             : undefined,
           processingTime: chainNode.processingTime,
         }

@@ -3,8 +3,11 @@
  *
  * This script enriches the scraped db.json with:
  * - URL-friendly slugs derived from item names
- * - localImagePath copied from legacy recipes.json where names match
  * - Computed derived fields: isRawMaterial, usesRawMaterial
+ *
+ * Note: Legacy image path fields (localImagePath, machineImagePath) are no longer
+ * enriched into db.json. The seed script handles image imports by looking up
+ * legacy recipes.json directly and linking to media relationships.
  *
  * Usage: npx tsx src/data/enrich-db.ts
  */
@@ -45,36 +48,11 @@ interface RawRecipe {
   sortId: string
 }
 
-// Types for legacy recipes.json
-interface LegacyItem {
-  id: string
-  name: string
-  localImagePath?: string
-  category?: string
-}
-
-interface LegacyFacility {
-  id: string
-  name: string
-  localImagePath?: string
-  category: string
-  processingTime?: number
-  description?: string
-}
-
-interface LegacyRecipesData {
-  totalItems: number
-  items: LegacyItem[]
-  facilities: LegacyFacility[]
-  recipes: unknown[]
-}
-
 // Enriched types
 interface EnrichedItem {
   itemId: string
   itemName: string
   slug: string
-  localImagePath?: string
   isRawMaterial: boolean
 }
 
@@ -90,7 +68,6 @@ interface EnrichedRecipe extends Omit<RawRecipe, 'ingredients' | 'outputs'> {
   ingredients: EnrichedIngredient[]
   outputs: EnrichedOutput[]
   usesRawMaterial: boolean
-  machineImagePath?: string
 }
 
 interface EnrichedDbData {
@@ -147,17 +124,6 @@ function disambiguateSlug(
   return `${baseSlug}_${counter}`
 }
 
-/**
- * Normalize item name for matching (handle minor punctuation differences)
- */
-function normalizeName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[-–—]/g, ' ') // Normalize dashes
-    .replace(/\s+/g, ' ')
-    .trim()
-}
-
 function main() {
   console.log('Starting db.json enrichment...')
 
@@ -200,25 +166,8 @@ function main() {
   }
   console.log(`Loaded ${rawRecipes.length} recipes from db.json`)
 
-  // Load legacy recipes.json
-  const legacyPath = path.join(__dirname, 'recipes.json')
-  const legacyContent = fs.readFileSync(legacyPath, 'utf-8')
-  const legacyData: LegacyRecipesData = JSON.parse(legacyContent)
-  console.log(`Loaded ${legacyData.items.length} items and ${legacyData.facilities.length} facilities from legacy recipes.json`)
-
-  // Build a lookup map for legacy items/facilities by normalized name
-  const legacyImageMap = new Map<string, string>()
-  for (const item of legacyData.items) {
-    if (item.localImagePath) {
-      legacyImageMap.set(normalizeName(item.name), item.localImagePath)
-    }
-  }
-  for (const facility of legacyData.facilities) {
-    if (facility.localImagePath) {
-      legacyImageMap.set(normalizeName(facility.name), facility.localImagePath)
-    }
-  }
-  console.log(`Built legacy image lookup with ${legacyImageMap.size} entries`)
+  // Note: Legacy recipes.json is no longer used for image path enrichment.
+  // The seed script handles image imports directly from legacy recipes.json.
 
   // Build unique item list from all ingredients and outputs
   const itemsById = new Map<string, { itemId: string; itemName: string }>()
@@ -268,8 +217,6 @@ function main() {
   const enrichedItems: EnrichedItem[] = []
   for (const item of sortedItems) {
     const slug = slugsByItemId.get(item.itemId)!
-    const normalizedName = normalizeName(item.itemName)
-    const localImagePath = legacyImageMap.get(normalizedName)
 
     // isRawMaterial: appears as ingredient but never as output
     const isRawMaterial = ingredientItemIds.has(item.itemId) && !outputItemIds.has(item.itemId)
@@ -281,10 +228,6 @@ function main() {
       isRawMaterial,
     }
 
-    if (localImagePath) {
-      enrichedItem.localImagePath = localImagePath
-    }
-
     enrichedItems.push(enrichedItem)
   }
 
@@ -293,15 +236,6 @@ function main() {
     enrichedItems.filter((item) => item.isRawMaterial).map((item) => item.itemId),
   )
   console.log(`Identified ${rawMaterialIds.size} raw materials`)
-
-  // Build machine image lookup from legacy facilities
-  const machineImageMap = new Map<string, string>()
-  for (const facility of legacyData.facilities) {
-    if (facility.localImagePath) {
-      machineImageMap.set(normalizeName(facility.name), facility.localImagePath)
-    }
-  }
-  console.log(`Built machine image lookup with ${machineImageMap.size} entries`)
 
   // Enrich recipes
   const enrichedRecipes: EnrichedRecipe[] = rawRecipes.map((recipe) => {
@@ -320,18 +254,11 @@ function main() {
     // Compute usesRawMaterial
     const usesRawMaterial = recipe.ingredients.some((ing) => rawMaterialIds.has(ing.itemId))
 
-    // Get machine image path
-    const machineImagePath = machineImageMap.get(normalizeName(recipe.machineName))
-
     const enrichedRecipe: EnrichedRecipe = {
       ...recipe,
       ingredients: enrichedIngredients,
       outputs: enrichedOutputs,
       usesRawMaterial,
-    }
-
-    if (machineImagePath) {
-      enrichedRecipe.machineImagePath = machineImagePath
     }
 
     return enrichedRecipe
@@ -348,9 +275,10 @@ function main() {
   console.log(`\nEnriched db.json written successfully!`)
   console.log(`  - ${enrichedItems.length} unique items`)
   console.log(`  - ${enrichedRecipes.length} recipes`)
-  console.log(`  - ${enrichedItems.filter((i) => i.localImagePath).length} items with images`)
   console.log(`  - ${enrichedItems.filter((i) => i.isRawMaterial).length} raw materials`)
-  console.log(`  - ${enrichedRecipes.filter((r) => r.usesRawMaterial).length} recipes using raw materials`)
+  console.log(
+    `  - ${enrichedRecipes.filter((r) => r.usesRawMaterial).length} recipes using raw materials`,
+  )
 }
 
 main()

@@ -4,7 +4,7 @@ export const Recipes: CollectionConfig = {
   slug: 'recipes',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'recipeId', 'type', 'category', 'machine'],
+    defaultColumns: ['name', 'recipeId', 'type', 'machine', 'rarity'],
   },
   access: {
     read: () => true,
@@ -42,14 +42,6 @@ export const Recipes: CollectionConfig = {
       index: true,
       admin: {
         description: 'Recipe type (e.g., hub, manual, facility)',
-      },
-    },
-    {
-      name: 'category',
-      type: 'text',
-      index: true,
-      admin: {
-        description: 'Recipe category (e.g., defense, handcraft)',
       },
     },
     {
@@ -114,13 +106,6 @@ export const Recipes: CollectionConfig = {
       type: 'number',
       admin: {
         description: 'Recipe rarity level',
-      },
-    },
-    {
-      name: 'craftTime',
-      type: 'number',
-      admin: {
-        description: 'Craft time in milliseconds',
       },
     },
     {

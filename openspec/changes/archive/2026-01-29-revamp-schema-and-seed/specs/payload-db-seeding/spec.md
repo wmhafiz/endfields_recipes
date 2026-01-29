@@ -1,25 +1,5 @@
 ## ADDED Requirements
 
-### Requirement: Seed command imports `db.json` into the database
-
-The system SHALL provide a seed workflow that reads the enriched dataset at `src/data/db.json` and imports it into Payload collections backed by PostgreSQL.
-
-#### Scenario: Seed populates items, machines, and recipes
-
-- **GIVEN** an empty database
-- **WHEN** the seed workflow is executed
-- **THEN** items, machines, and recipes are created in the database
-
-### Requirement: Seed is idempotent
-
-The system SHALL allow the seed workflow to be executed multiple times without creating duplicate documents.
-
-#### Scenario: Running seed twice does not create duplicates
-
-- **GIVEN** the seed workflow has already been executed successfully
-- **WHEN** the seed workflow is executed again with the same `db.json`
-- **THEN** the database contains no duplicate items, machines, or recipes
-
 ### Requirement: Seed supports reset + rebuild mode
 
 The system SHALL provide a seed workflow option that clears existing seeded data and rebuilds the database from the source datasets.
@@ -29,46 +9,6 @@ The system SHALL provide a seed workflow option that clears existing seeded data
 - **GIVEN** the database contains previously seeded items, machines, recipes, and media
 - **WHEN** the seed workflow is executed with reset enabled
 - **THEN** existing seeded documents are deleted and then re-created from source data
-
-### Requirement: Seed imports item images when available
-
-The system SHALL import item images when a source image path is available and the referenced file exists locally and associate the uploaded media to the corresponding item.
-
-#### Scenario: Item image is imported when source path exists
-
-- **GIVEN** an item's source image path points to an existing file under `public/`
-- **WHEN** the seed workflow is executed
-- **THEN** the item is linked to a corresponding `media` document for that image
-
-### Requirement: Seed imports machine images when available
-
-The system SHALL import machine images when a source image path is available and the referenced file exists locally and associate the uploaded media to the corresponding machine.
-
-#### Scenario: Machine image is imported when source path exists
-
-- **GIVEN** a machine image source path exists in the seed inputs and points to an existing file under `public/`
-- **WHEN** the seed workflow is executed
-- **THEN** the machine is linked to a corresponding `media` document for that image
-
-### Requirement: Missing images do not block seeding
-
-The system SHALL continue importing core recipe data even when one or more referenced image files are missing.
-
-#### Scenario: Missing image is skipped safely
-
-- **GIVEN** an item or machine image path exists but the file is missing on disk
-- **WHEN** the seed workflow is executed
-- **THEN** the related item or machine is created without an image link and the overall seed completes successfully
-
-### Requirement: Seed treats `db.json` as read-only input
-
-The system SHALL NOT modify `src/data/db.json` as part of the seed workflow.
-
-#### Scenario: Source dataset remains unchanged
-
-- **GIVEN** the seed workflow is executed
-- **WHEN** the process completes
-- **THEN** `src/data/db.json` remains unchanged on disk
 
 ### Requirement: Seed populates item metadata fields
 
@@ -115,3 +55,25 @@ The seed workflow SHALL set `machines.craftTime` (milliseconds) based on recipes
 - **GIVEN** two recipes share the same `machineId` but have different craft time values in the source dataset
 - **WHEN** the seed workflow is executed
 - **THEN** the seed logs a warning identifying the machine and conflicting craft time values and proceeds by selecting a deterministic craft time
+
+## MODIFIED Requirements
+
+### Requirement: Seed imports item images when available
+
+The system SHALL import item images when a source image path is available and the referenced file exists locally and associate the uploaded media to the corresponding item.
+
+#### Scenario: Item image is imported when source path exists
+
+- **GIVEN** an item’s source image path points to an existing file under `public/`
+- **WHEN** the seed workflow is executed
+- **THEN** the item is linked to a corresponding `media` document for that image
+
+### Requirement: Seed imports machine images when available
+
+The system SHALL import machine images when a source image path is available and the referenced file exists locally and associate the uploaded media to the corresponding machine.
+
+#### Scenario: Machine image is imported when source path exists
+
+- **GIVEN** a machine image source path exists in the seed inputs and points to an existing file under `public/`
+- **WHEN** the seed workflow is executed
+- **THEN** the machine is linked to a corresponding `media` document for that image

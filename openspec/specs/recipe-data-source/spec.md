@@ -22,24 +22,6 @@ The system SHALL enrich `db.json` items with a `slug` field derived from the ite
 - **WHEN** the enrichment script runs
 - **THEN** slugs are disambiguated with a suffix (e.g., `"Ferrium_Bottle"`, `"Ferrium_Bottle_2"`)
 
-### Requirement: Enrich `db.json` with legacy image paths
-
-The system SHALL enrich `db.json` items with `localImagePath` from legacy `recipes.json` where names match.
-
-#### Scenario: Legacy image path is copied when names match
-
-- **GIVEN** legacy `recipes.json` contains an item named "Aketine" with `localImagePath: "images/items/Aketine.png"`
-- **AND** `db.json` contains an item with `itemName: "Aketine"`
-- **WHEN** the enrichment script runs
-- **THEN** the enriched item has `localImagePath: "images/items/Aketine.png"`
-
-#### Scenario: Missing legacy image path remains undefined
-
-- **GIVEN** `db.json` contains an item with `itemName: "Wood"`
-- **AND** legacy `recipes.json` has no image for "Wood"
-- **WHEN** the enrichment script runs
-- **THEN** the enriched item has no `localImagePath` field
-
 ### Requirement: Compute raw material status
 
 The system SHALL compute and store `isRawMaterial` for each item.
@@ -97,3 +79,13 @@ The system SHALL treat the Payload/PostgreSQL database as the canonical runtime 
 - **GIVEN** the database has been seeded from `src/data/db.json`
 - **WHEN** the user views the recipe browser UI
 - **THEN** recipe rows are loaded from the database (not by directly importing `db.json`)
+
+### Requirement: Runtime UI resolves item and machine images via media
+
+The system SHALL resolve item and machine images from Payload `media` relationships and render placeholders when no media URL is available.
+
+#### Scenario: Missing media shows placeholder
+
+- **GIVEN** an item exists with no linked media image
+- **WHEN** the item is rendered in the UI
+- **THEN** a placeholder is displayed instead of a broken image

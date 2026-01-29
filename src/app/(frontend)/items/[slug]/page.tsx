@@ -45,7 +45,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
 
   return (
     <div className="item-detail-container">
-      <ItemHeader id={item.itemId} name={item.itemName} imagePath={item.localImagePath} />
+      <ItemHeader id={item.itemId} name={item.itemName} imagePath={item.imageUrl} />
 
       <main className="item-detail-content">
         {/* Production Chain Section */}
@@ -71,7 +71,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
             <h2 className="section-title">Produced By</h2>
             <div className="recipe-cards">
               {producedByRecipes.map((recipe) => {
-                const craftTime = Number(recipe.craftTime)
+                const craftTime = recipe.machineCraftTime
                 return (
                   <div key={recipe.id} className="detail-recipe-card">
                     <div className="recipe-inputs">
@@ -86,7 +86,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
                               className="recipe-item-link"
                             >
                               <ImageOrPlaceholder
-                                imagePath={ingredientItem?.localImagePath}
+                                imagePath={ingredientItem?.imageUrl}
                                 alt={ingredient.itemName}
                                 width={32}
                                 height={32}
@@ -108,7 +108,9 @@ export default async function ItemPage({ params }: ItemPageProps) {
                       <span className="recipe-label">Machine</span>
                       <div className="recipe-facility-info">
                         <span>{recipe.machineName}</span>
-                        {craftTime > 0 && <span className="recipe-time">⏱ {craftTime}s</span>}
+                        {craftTime > 0 && (
+                          <span className="recipe-time">⏱ {craftTime / 1000}s</span>
+                        )}
                       </div>
                     </div>
 
@@ -118,7 +120,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
                       <span className="recipe-label">Output</span>
                       <div className="recipe-output-info">
                         <ImageOrPlaceholder
-                          imagePath={item.localImagePath}
+                          imagePath={item.imageUrl}
                           alt={item.itemName}
                           width={32}
                           height={32}
@@ -145,7 +147,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
           ) : (
             <div className="recipe-cards">
               {usedInRecipes.map((recipe) => {
-                const craftTime = Number(recipe.craftTime)
+                const craftTime = recipe.machineCraftTime
                 const primaryOutput = recipe.outputs[0]
                 const outputItem = primaryOutput ? itemsById.get(primaryOutput.itemId) : undefined
                 return (
@@ -163,7 +165,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
                               className={`recipe-item-link ${isCurrentItem ? 'highlighted' : ''}`}
                             >
                               <ImageOrPlaceholder
-                                imagePath={ingredientItem?.localImagePath}
+                                imagePath={ingredientItem?.imageUrl}
                                 alt={ingredient.itemName}
                                 width={32}
                                 height={32}
@@ -185,7 +187,9 @@ export default async function ItemPage({ params }: ItemPageProps) {
                       <span className="recipe-label">Machine</span>
                       <div className="recipe-facility-info">
                         <span>{recipe.machineName}</span>
-                        {craftTime > 0 && <span className="recipe-time">⏱ {craftTime}s</span>}
+                        {craftTime > 0 && (
+                          <span className="recipe-time">⏱ {craftTime / 1000}s</span>
+                        )}
                       </div>
                     </div>
 
@@ -198,7 +202,7 @@ export default async function ItemPage({ params }: ItemPageProps) {
                         className="recipe-output-link"
                       >
                         <ImageOrPlaceholder
-                          imagePath={outputItem?.localImagePath}
+                          imagePath={outputItem?.imageUrl}
                           alt={primaryOutput?.itemName || recipe.name}
                           width={32}
                           height={32}

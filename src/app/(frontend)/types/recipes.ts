@@ -19,8 +19,11 @@ export interface EnrichedItem {
   itemId: string
   itemName: string
   slug: string
-  localImagePath?: string
+  imageUrl?: string
   isRawMaterial: boolean
+  category?: string
+  rarity?: number
+  sortId?: number
 }
 
 /**
@@ -45,20 +48,23 @@ export interface EnrichedOutput {
 
 /**
  * A recipe in the enriched database
+ *
+ * Note: category and craftTime have been moved to items and machines respectively.
+ * - category: Use outputItem.category for filtering/grouping
+ * - craftTime: Use machine.craftTime for throughput calculations
  */
 export interface EnrichedRecipe {
   id: string
   name: string
   description: string
   type: RecipeType
-  category: string
   machineId: string
   machineName: string
-  machineImagePath?: string
+  machineImageUrl?: string
+  machineCraftTime: number
   ingredients: EnrichedIngredient[]
   outputs: EnrichedOutput[]
   rarity: string
-  craftTime: string
   defaultUnlock: string
   sortId: string
   usesRawMaterial: boolean

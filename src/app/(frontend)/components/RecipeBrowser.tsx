@@ -18,7 +18,7 @@ interface RecipeBrowserProps {
 const ALL = 'All'
 
 // Helper to get unique values from an array
-function getUniqueValues<T>(items: T[], getter: (item: T) => string): string[] {
+function getUniqueValues<T>(items: T[], getter: (item: T) => string | undefined): string[] {
   const values = new Set<string>()
   for (const item of items) {
     const value = getter(item)
@@ -27,6 +27,13 @@ function getUniqueValues<T>(items: T[], getter: (item: T) => string): string[] {
     }
   }
   return Array.from(values).sort()
+}
+
+// Format craft time for display (ms to seconds)
+function formatCraftTime(ms: number): string {
+  if (ms === 0) return 'Instant'
+  const seconds = ms / 1000
+  return seconds >= 60 ? `${Math.round(seconds / 60)}m` : `${seconds}s`
 }
 
 export function RecipeBrowser({ data }: RecipeBrowserProps) {
@@ -47,23 +54,41 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
   const [sortField, setSortField] = useState<RecipeSortField>('default')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
 
-  // Build item lookup for image paths
+  // Build item lookup for image URLs and categories
   const itemsById = useMemo(() => {
-    const map = new Map<string, { slug: string; localImagePath?: string }>()
+    const map = new Map<string, { slug: string; imageUrl?: string; category?: string }>()
     for (const item of data.items) {
-      map.set(item.itemId, { slug: item.slug, localImagePath: item.localImagePath })
+      map.set(item.itemId, { slug: item.slug, imageUrl: item.imageUrl, category: item.category })
     }
     return map
   }, [data.items])
 
-  // Derive filter options from recipes
+  // Get category for a recipe (from primary output item)
+  const getRecipeCategory = useCallback(
+    (recipe: EnrichedRecipe): string | undefined => {
+      const primaryOutput = recipe.outputs[0]
+      if (!primaryOutput) return undefined
+      return itemsById.get(primaryOutput.itemId)?.category
+    },
+    [itemsById],
+  )
+
+  // Derive filter options
   const typeOptions = useMemo(() => {
     return [ALL, ...getUniqueValues(data.recipes, (r) => r.type)]
   }, [data.recipes])
 
+  // Category options derived from output items
   const categoryOptions = useMemo(() => {
-    return [ALL, ...getUniqueValues(data.recipes, (r) => r.category)]
-  }, [data.recipes])
+    const categories = new Set<string>()
+    for (const recipe of data.recipes) {
+      const category = getRecipeCategory(recipe)
+      if (category) {
+        categories.add(category)
+      }
+    }
+    return [ALL, ...Array.from(categories).sort()]
+  }, [data.recipes, getRecipeCategory])
 
   const machineOptions = useMemo(() => {
     return [ALL, ...getUniqueValues(data.recipes, (r) => r.machineName)]
@@ -84,9 +109,9 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
       recipes = recipes.filter((r) => r.type === selectedType)
     }
 
-    // Filter by category
+    // Filter by category (from output item)
     if (selectedCategory !== ALL) {
-      recipes = recipes.filter((r) => r.category === selectedCategory)
+      recipes = recipes.filter((r) => getRecipeCategory(r) === selectedCategory)
     }
 
     // Filter by machine
@@ -141,6 +166,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
     selectedRarity,
     usesRawMaterialFilter,
     searchQuery,
+    getRecipeCategory,
   ])
 
   // Sort recipes
@@ -160,14 +186,19 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
           )
           break
         case 'craftTime':
-          comparison = Number(a.craftTime) - Number(b.craftTime)
+          // Use machineCraftTime (from machine)
+          comparison = a.machineCraftTime - b.machineCraftTime
           break
         case 'type':
           comparison = a.type.localeCompare(b.type)
           break
-        case 'category':
-          comparison = a.category.localeCompare(b.category)
+        case 'category': {
+          // Sort by output item category
+          const catA = getRecipeCategory(a) || ''
+          const catB = getRecipeCategory(b) || ''
+          comparison = catA.localeCompare(catB)
           break
+        }
       }
 
       return sortDirection === 'desc' ? -comparison : comparison
@@ -175,12 +206,12 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
 
     sorted.sort(sortFn)
     return sorted
-  }, [filteredRecipes, sortField, sortDirection])
+  }, [filteredRecipes, sortField, sortDirection, getRecipeCategory])
 
-  // Get image path for an item
+  // Get image URL for an item
   const getItemImage = useCallback(
     (itemId: string): string | undefined => {
-      return itemsById.get(itemId)?.localImagePath
+      return itemsById.get(itemId)?.imageUrl
     },
     [itemsById],
   )
@@ -298,7 +329,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
           >
             {categoryOptions.map((cat) => (
               <option key={cat} value={cat}>
-                {cat === ALL ? 'All Categories' : cat.charAt(0).toUpperCase() + cat.slice(1)}
+                {cat === ALL ? 'All Categories' : cat}
               </option>
             ))}
           </select>
@@ -379,13 +410,10 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
           const primaryOutput = recipe.outputs[0]
           const outputSlug = primaryOutput ? getItemSlug(primaryOutput.itemId) : recipe.id
           const outputImage = primaryOutput ? getItemImage(primaryOutput.itemId) : undefined
+          const category = getRecipeCategory(recipe)
 
           return (
-            <Link
-              key={recipe.id}
-              href={`/items/${outputSlug}`}
-              className={`item-card ${viewMode}`}
-            >
+            <Link key={recipe.id} href={`/items/${outputSlug}`} className={`item-card ${viewMode}`}>
               <div className="item-image-wrapper">
                 <ImageOrPlaceholder
                   imagePath={outputImage}
@@ -403,12 +431,18 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
                 {viewMode === 'list' && (
                   <div className="recipe-meta">
                     <span className="recipe-meta-item">{recipe.machineName}</span>
-                    <span className="recipe-meta-separator">•</span>
-                    <span className="recipe-meta-item">{recipe.category}</span>
-                    {recipe.craftTime !== '0' && (
+                    {category && (
                       <>
                         <span className="recipe-meta-separator">•</span>
-                        <span className="recipe-meta-item">{recipe.craftTime}s</span>
+                        <span className="recipe-meta-item">{category}</span>
+                      </>
+                    )}
+                    {recipe.machineCraftTime > 0 && (
+                      <>
+                        <span className="recipe-meta-separator">•</span>
+                        <span className="recipe-meta-item">
+                          {formatCraftTime(recipe.machineCraftTime)}
+                        </span>
                       </>
                     )}
                   </div>

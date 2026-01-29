@@ -1,9 +1,8 @@
 /**
  * Server-side data access helpers for Payload CMS
  *
- * These functions query Payload/Postgres and return data in the same shape
- * as the legacy db.json types (EnrichedDbData) for compatibility with
- * existing frontend components.
+ * These functions query Payload/Postgres and return data in the canonical
+ * frontend shape for use by UI components.
  */
 import { getPayload } from 'payload'
 import config from '@payload-config'
@@ -14,7 +13,7 @@ import type {
   EnrichedIngredient,
   EnrichedOutput,
 } from '../types/recipes'
-import type { Item, Machine, Media } from '@/payload-types'
+import type { Item, Machine, Media, ItemCategory } from '@/payload-types'
 
 // Environment flag for rollback - set USE_JSON_FALLBACK=true to use db.json
 const USE_JSON_FALLBACK = process.env.USE_JSON_FALLBACK === 'true'
@@ -25,24 +24,26 @@ const USE_JSON_FALLBACK = process.env.USE_JSON_FALLBACK === 'true'
  */
 export async function getAllData(): Promise<EnrichedDbData> {
   if (USE_JSON_FALLBACK) {
+    // Note: The legacy db.json format will need to be transformed
+    // if used as fallback. For now, this path is deprecated.
     const dbData = await import('@/data/db.json')
-    return dbData.default as EnrichedDbData
+    return transformLegacyDbData(dbData.default)
   }
 
   const payload = await getPayload({ config })
 
-  // Fetch all items
+  // Fetch all items with category populated
   const itemsResult = await payload.find({
     collection: 'items',
     limit: 10000,
-    depth: 1, // Include media relationship
+    depth: 2, // Include media and category relationships
   })
 
-  // Fetch all machines (for machine name lookup)
+  // Fetch all machines with category populated
   const machinesResult = await payload.find({
     collection: 'machines',
     limit: 1000,
-    depth: 1,
+    depth: 2,
   })
 
   // Fetch all recipes with relationships populated
@@ -70,7 +71,10 @@ export async function getAllData(): Promise<EnrichedDbData> {
     itemName: item.itemName,
     slug: item.slug,
     isRawMaterial: item.isRawMaterial ?? false,
-    localImagePath: item.localImagePath ?? getMediaUrl(item.image),
+    imageUrl: getMediaUrl(item.image),
+    category: getCategoryName(item.category),
+    rarity: item.rarity ?? 0,
+    sortId: item.sortId ?? undefined,
   }))
 
   // Transform recipes to EnrichedRecipe format
@@ -106,14 +110,13 @@ export async function getAllData(): Promise<EnrichedDbData> {
       name: recipe.name,
       description: recipe.description ?? '',
       type: recipe.type as 'manual' | 'machine' | 'hub',
-      category: recipe.category ?? '',
       machineId: machine?.machineId ?? '',
       machineName: machine?.machineName ?? '',
-      machineImagePath: machine?.machineImagePath ?? getMediaUrl(machine?.image),
+      machineImageUrl: getMediaUrl(machine?.image),
+      machineCraftTime: machine?.craftTime ?? 0,
       ingredients,
       outputs,
       rarity: String(recipe.rarity ?? 0),
-      craftTime: String(recipe.craftTime ?? 0),
       defaultUnlock: String(recipe.defaultUnlock ?? 0),
       sortId: String(recipe.sortId ?? 0),
       usesRawMaterial: recipe.usesRawMaterial ?? false,
@@ -128,9 +131,8 @@ export async function getAllData(): Promise<EnrichedDbData> {
  */
 export async function getItemBySlug(slug: string): Promise<EnrichedItem | null> {
   if (USE_JSON_FALLBACK) {
-    const dbData = await import('@/data/db.json')
-    const data = dbData.default as EnrichedDbData
-    return data.items.find((item) => item.slug === slug) ?? null
+    const allData = await getAllData()
+    return allData.items.find((item) => item.slug === slug) ?? null
   }
 
   const payload = await getPayload({ config })
@@ -139,7 +141,7 @@ export async function getItemBySlug(slug: string): Promise<EnrichedItem | null> 
     collection: 'items',
     where: { slug: { equals: slug } },
     limit: 1,
-    depth: 1,
+    depth: 2,
   })
 
   if (result.docs.length === 0) {
@@ -152,7 +154,10 @@ export async function getItemBySlug(slug: string): Promise<EnrichedItem | null> 
     itemName: item.itemName,
     slug: item.slug,
     isRawMaterial: item.isRawMaterial ?? false,
-    localImagePath: item.localImagePath ?? getMediaUrl(item.image),
+    imageUrl: getMediaUrl(item.image),
+    category: getCategoryName(item.category),
+    rarity: item.rarity ?? 0,
+    sortId: item.sortId ?? undefined,
   }
 }
 
@@ -179,4 +184,72 @@ function getMediaUrl(media: number | Media | null | undefined): string | undefin
   if (!media) return undefined
   if (typeof media === 'number') return undefined
   return media.url ?? undefined
+}
+
+/**
+ * Helper to get category name from a category relationship
+ */
+function getCategoryName(category: number | ItemCategory | null | undefined): string | undefined {
+  if (!category) return undefined
+  if (typeof category === 'number') return undefined
+  return category.name ?? undefined
+}
+
+/**
+ * Transform legacy db.json format to new EnrichedDbData format
+ * Used for fallback mode compatibility
+ */
+function transformLegacyDbData(legacyData: {
+  items: Array<{
+    itemId: string
+    itemName: string
+    slug: string
+    isRawMaterial: boolean
+    localImagePath?: string
+  }>
+  recipes: Array<{
+    id: string
+    name: string
+    description: string
+    type: string
+    category?: string
+    machineId: string
+    machineName: string
+    machineImagePath?: string
+    ingredients: Array<{ itemId: string; itemName: string; count: number; slug: string }>
+    outputs: Array<{ itemId: string; itemName: string; count: number; slug: string }>
+    rarity: string
+    craftTime?: string
+    defaultUnlock: string
+    sortId: string
+    usesRawMaterial: boolean
+  }>
+}): EnrichedDbData {
+  const items: EnrichedItem[] = legacyData.items.map((item) => ({
+    itemId: item.itemId,
+    itemName: item.itemName,
+    slug: item.slug,
+    isRawMaterial: item.isRawMaterial,
+    // Convert legacy localImagePath to imageUrl format
+    imageUrl: item.localImagePath ? `/${item.localImagePath}` : undefined,
+  }))
+
+  const recipes: EnrichedRecipe[] = legacyData.recipes.map((recipe) => ({
+    id: recipe.id,
+    name: recipe.name,
+    description: recipe.description,
+    type: recipe.type as 'manual' | 'machine' | 'hub',
+    machineId: recipe.machineId,
+    machineName: recipe.machineName,
+    machineImageUrl: recipe.machineImagePath ? `/${recipe.machineImagePath}` : undefined,
+    machineCraftTime: parseInt(recipe.craftTime ?? '0', 10),
+    ingredients: recipe.ingredients,
+    outputs: recipe.outputs,
+    rarity: recipe.rarity,
+    defaultUnlock: recipe.defaultUnlock,
+    sortId: recipe.sortId,
+    usesRawMaterial: recipe.usesRawMaterial,
+  }))
+
+  return { items, recipes }
 }

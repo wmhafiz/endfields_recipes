@@ -4,7 +4,7 @@ export const Machines: CollectionConfig = {
   slug: 'machines',
   admin: {
     useAsTitle: 'machineName',
-    defaultColumns: ['machineName', 'machineId'],
+    defaultColumns: ['machineName', 'machineId', 'category', 'craftTime', 'rarity'],
   },
   access: {
     read: () => true,
@@ -29,18 +29,45 @@ export const Machines: CollectionConfig = {
       },
     },
     {
+      name: 'category',
+      type: 'relationship',
+      relationTo: 'machine-categories',
+      admin: {
+        description: 'Machine category (optional)',
+      },
+    },
+    {
+      name: 'rarity',
+      type: 'number',
+      required: true,
+      defaultValue: 0,
+      admin: {
+        description: 'Machine rarity level',
+      },
+    },
+    {
+      name: 'sortId',
+      type: 'number',
+      index: true,
+      admin: {
+        description: 'Sort order for display (optional)',
+      },
+    },
+    {
+      name: 'craftTime',
+      type: 'number',
+      required: true,
+      defaultValue: 0,
+      admin: {
+        description: 'Craft time in milliseconds',
+      },
+    },
+    {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
       admin: {
         description: 'Machine/facility image (optional)',
-      },
-    },
-    {
-      name: 'machineImagePath',
-      type: 'text',
-      admin: {
-        description: 'Original image path from db.json (kept for rollback)',
       },
     },
   ],

@@ -70,7 +70,9 @@ export interface Config {
     users: User;
     media: Media;
     items: Item;
+    'item-categories': ItemCategory;
     machines: Machine;
+    'machine-categories': MachineCategory;
     recipes: Recipe;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -82,7 +84,9 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     items: ItemsSelect<false> | ItemsSelect<true>;
+    'item-categories': ItemCategoriesSelect<false> | ItemCategoriesSelect<true>;
     machines: MachinesSelect<false> | MachinesSelect<true>;
+    'machine-categories': MachineCategoriesSelect<false> | MachineCategoriesSelect<true>;
     recipes: RecipesSelect<false> | RecipesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -188,6 +192,18 @@ export interface Item {
    */
   slug: string;
   /**
+   * Item category (optional)
+   */
+  category?: (number | null) | ItemCategory;
+  /**
+   * Item rarity level
+   */
+  rarity: number;
+  /**
+   * Sort order for display (optional)
+   */
+  sortId?: number | null;
+  /**
    * Whether this item is a raw/base material
    */
   isRawMaterial?: boolean | null;
@@ -195,10 +211,23 @@ export interface Item {
    * Item image (optional)
    */
   image?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "item-categories".
+ */
+export interface ItemCategory {
+  id: number;
   /**
-   * Original image path from db.json (kept for rollback)
+   * Unique category name
    */
-  localImagePath?: string | null;
+  name: string;
+  /**
+   * Sort order for display (optional)
+   */
+  sortId?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -217,13 +246,42 @@ export interface Machine {
    */
   machineName: string;
   /**
+   * Machine category (optional)
+   */
+  category?: (number | null) | MachineCategory;
+  /**
+   * Machine rarity level
+   */
+  rarity: number;
+  /**
+   * Sort order for display (optional)
+   */
+  sortId?: number | null;
+  /**
+   * Craft time in milliseconds
+   */
+  craftTime: number;
+  /**
    * Machine/facility image (optional)
    */
   image?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "machine-categories".
+ */
+export interface MachineCategory {
+  id: number;
   /**
-   * Original image path from db.json (kept for rollback)
+   * Unique category name
    */
-  machineImagePath?: string | null;
+  name: string;
+  /**
+   * Sort order for display (optional)
+   */
+  sortId?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -250,10 +308,6 @@ export interface Recipe {
    */
   type: string;
   /**
-   * Recipe category (e.g., defense, handcraft)
-   */
-  category?: string | null;
-  /**
    * The machine/facility used for this recipe
    */
   machine: number | Machine;
@@ -277,10 +331,6 @@ export interface Recipe {
    * Recipe rarity level
    */
   rarity?: number | null;
-  /**
-   * Craft time in milliseconds
-   */
-  craftTime?: number | null;
   /**
    * Default unlock status (0 or 1)
    */
@@ -333,8 +383,16 @@ export interface PayloadLockedDocument {
         value: number | Item;
       } | null)
     | ({
+        relationTo: 'item-categories';
+        value: number | ItemCategory;
+      } | null)
+    | ({
         relationTo: 'machines';
         value: number | Machine;
+      } | null)
+    | ({
+        relationTo: 'machine-categories';
+        value: number | MachineCategory;
       } | null)
     | ({
         relationTo: 'recipes';
@@ -431,9 +489,21 @@ export interface ItemsSelect<T extends boolean = true> {
   itemId?: T;
   itemName?: T;
   slug?: T;
+  category?: T;
+  rarity?: T;
+  sortId?: T;
   isRawMaterial?: T;
   image?: T;
-  localImagePath?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "item-categories_select".
+ */
+export interface ItemCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  sortId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -444,8 +514,21 @@ export interface ItemsSelect<T extends boolean = true> {
 export interface MachinesSelect<T extends boolean = true> {
   machineId?: T;
   machineName?: T;
+  category?: T;
+  rarity?: T;
+  sortId?: T;
+  craftTime?: T;
   image?: T;
-  machineImagePath?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "machine-categories_select".
+ */
+export interface MachineCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  sortId?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -458,7 +541,6 @@ export interface RecipesSelect<T extends boolean = true> {
   name?: T;
   description?: T;
   type?: T;
-  category?: T;
   machine?: T;
   ingredients?:
     | T
@@ -475,7 +557,6 @@ export interface RecipesSelect<T extends boolean = true> {
         id?: T;
       };
   rarity?: T;
-  craftTime?: T;
   defaultUnlock?: T;
   sortId?: T;
   usesRawMaterial?: T;
