@@ -12,7 +12,6 @@ import {
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 
 import { ItemNode, type ItemNodeData } from './ItemNode'
 import { FacilityNode } from './FacilityNode'
@@ -108,7 +107,7 @@ export function ProductionChain({ itemSlug, data, item }: ProductionChainProps) 
     <div className="chain-fullscreen">
       {/* Header overlay with back link and item info */}
       <div className="chain-header-overlay">
-        <Link href="/" className="chain-back-link">
+        <button onClick={() => router.back()} className="chain-back-link">
           <svg
             width="16"
             height="16"
@@ -120,7 +119,7 @@ export function ProductionChain({ itemSlug, data, item }: ProductionChainProps) 
             <path d="M15 18l-6-6 6-6" />
           </svg>
           Back to Items
-        </Link>
+        </button>
         <div className="chain-item-badge">
           <ImageOrPlaceholder
             imagePath={item.imageUrl}
