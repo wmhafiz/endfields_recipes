@@ -1,21 +1,14 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, useMemo, useCallback } from 'react'
-import type {
-  EnrichedDbData,
-  EnrichedRecipe,
-  RecipeSortField,
-  SortDirection,
-  ViewMode,
-} from '../types/recipes'
+import { useMemo, useCallback } from 'react'
+import type { EnrichedDbData, EnrichedRecipe, RecipeSortField, SortDirection } from '../types/recipes'
 import { ImageOrPlaceholder } from './ImageOrPlaceholder'
+import { useRecipeBrowserParams, recipeBrowserDefaults } from '../hooks/useRecipeBrowserParams'
 
 interface RecipeBrowserProps {
   data: EnrichedDbData
 }
-
-const ALL = 'All'
 
 // Helper to get unique values from an array
 function getUniqueValues<T>(items: T[], getter: (item: T) => string | undefined): string[] {
@@ -37,22 +30,59 @@ function formatCraftTime(ms: number): string {
 }
 
 export function RecipeBrowser({ data }: RecipeBrowserProps) {
-  // View mode
-  const [viewMode, setViewMode] = useState<ViewMode>('grid')
+  // URL-synced state via nuqs
+  const [urlState, setUrlState] = useRecipeBrowserParams()
 
-  // Search
-  const [searchQuery, setSearchQuery] = useState('')
+  // Destructure for easier access
+  const {
+    q: searchQuery,
+    type: selectedType,
+    cat: selectedCategory,
+    machine: selectedMachine,
+    rarity: selectedRarity,
+    raw: usesRawMaterialFilter,
+    sort: sortField,
+    dir: sortDirection,
+    view: viewMode,
+  } = urlState
 
-  // Filters
-  const [selectedType, setSelectedType] = useState<string>(ALL)
-  const [selectedCategory, setSelectedCategory] = useState<string>(ALL)
-  const [selectedMachine, setSelectedMachine] = useState<string>(ALL)
-  const [selectedRarity, setSelectedRarity] = useState<string>(ALL)
-  const [usesRawMaterialFilter, setUsesRawMaterialFilter] = useState<string>(ALL)
-
-  // Sorting
-  const [sortField, setSortField] = useState<RecipeSortField>('default')
-  const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
+  // Convenience setters that update individual URL params
+  const setSearchQuery = useCallback(
+    (value: string) => setUrlState({ q: value }),
+    [setUrlState],
+  )
+  const setSelectedType = useCallback(
+    (value: string) => setUrlState({ type: value as 'all' | 'machine' | 'manual' | 'hub' }),
+    [setUrlState],
+  )
+  const setSelectedCategory = useCallback(
+    (value: string) => setUrlState({ cat: value }),
+    [setUrlState],
+  )
+  const setSelectedMachine = useCallback(
+    (value: string) => setUrlState({ machine: value }),
+    [setUrlState],
+  )
+  const setSelectedRarity = useCallback(
+    (value: string) => setUrlState({ rarity: value }),
+    [setUrlState],
+  )
+  const setUsesRawMaterialFilter = useCallback(
+    (value: string) => setUrlState({ raw: value as 'all' | 'yes' | 'no' }),
+    [setUrlState],
+  )
+  const setSortField = useCallback(
+    (value: RecipeSortField) => setUrlState({ sort: value }),
+    [setUrlState],
+  )
+  const setSortDirection = useCallback(
+    (value: SortDirection) => setUrlState({ dir: value }),
+    [setUrlState],
+  )
+  const setViewMode = useCallback(
+    (value: 'grid' | 'list') => setUrlState({ view: value }),
+    [setUrlState],
+  )
 
   // Build item lookup for image URLs and categories
   const itemsById = useMemo(() => {
@@ -75,7 +105,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
 
   // Derive filter options
   const typeOptions = useMemo(() => {
-    return [ALL, ...getUniqueValues(data.recipes, (r) => r.type)]
+    return ['all', ...getUniqueValues(data.recipes, (r) => r.type)]
   }, [data.recipes])
 
   // Category options derived from output items
@@ -87,17 +117,17 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
         categories.add(category)
       }
     }
-    return [ALL, ...Array.from(categories).sort()]
+    return ['all', ...Array.from(categories).sort()]
   }, [data.recipes, getRecipeCategory])
 
   const machineOptions = useMemo(() => {
-    return [ALL, ...getUniqueValues(data.recipes, (r) => r.machineName)]
+    return ['all', ...getUniqueValues(data.recipes, (r) => r.machineName)]
   }, [data.recipes])
 
   const rarityOptions = useMemo(() => {
     const rarities = getUniqueValues(data.recipes, (r) => r.rarity)
     // Sort numerically
-    return [ALL, ...rarities.sort((a, b) => Number(a) - Number(b))]
+    return ['all', ...rarities.sort((a, b) => Number(a) - Number(b))]
   }, [data.recipes])
 
   // Filter and search recipes
@@ -105,27 +135,27 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
     let recipes = data.recipes
 
     // Filter by type
-    if (selectedType !== ALL) {
+    if (selectedType !== 'all') {
       recipes = recipes.filter((r) => r.type === selectedType)
     }
 
     // Filter by category (from output item)
-    if (selectedCategory !== ALL) {
+    if (selectedCategory !== 'all') {
       recipes = recipes.filter((r) => getRecipeCategory(r) === selectedCategory)
     }
 
     // Filter by machine
-    if (selectedMachine !== ALL) {
+    if (selectedMachine !== 'all') {
       recipes = recipes.filter((r) => r.machineName === selectedMachine)
     }
 
     // Filter by rarity
-    if (selectedRarity !== ALL) {
+    if (selectedRarity !== 'all') {
       recipes = recipes.filter((r) => r.rarity === selectedRarity)
     }
 
     // Filter by uses raw material
-    if (usesRawMaterialFilter !== ALL) {
+    if (usesRawMaterialFilter !== 'all') {
       const usesRaw = usesRawMaterialFilter === 'yes'
       recipes = recipes.filter((r) => r.usesRawMaterial === usesRaw)
     }
@@ -224,25 +254,18 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
     [itemsById],
   )
 
-  // Clear all filters
-  const clearFilters = () => {
-    setSearchQuery('')
-    setSelectedType(ALL)
-    setSelectedCategory(ALL)
-    setSelectedMachine(ALL)
-    setSelectedRarity(ALL)
-    setUsesRawMaterialFilter(ALL)
-    setSortField('default')
-    setSortDirection('asc')
-  }
+  // Clear all filters - reset all URL params to defaults
+  const clearFilters = useCallback(() => {
+    setUrlState(recipeBrowserDefaults)
+  }, [setUrlState])
 
   const hasActiveFilters =
-    searchQuery ||
-    selectedType !== ALL ||
-    selectedCategory !== ALL ||
-    selectedMachine !== ALL ||
-    selectedRarity !== ALL ||
-    usesRawMaterialFilter !== ALL
+    searchQuery !== '' ||
+    selectedType !== 'all' ||
+    selectedCategory !== 'all' ||
+    selectedMachine !== 'all' ||
+    selectedRarity !== 'all' ||
+    usesRawMaterialFilter !== 'all'
 
   return (
     <div className="items-container">
@@ -316,7 +339,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
           >
             {typeOptions.map((type) => (
               <option key={type} value={type}>
-                {type === ALL ? 'All Types' : type.charAt(0).toUpperCase() + type.slice(1)}
+                {type === 'all' ? 'All Types' : type.charAt(0).toUpperCase() + type.slice(1)}
               </option>
             ))}
           </select>
@@ -329,7 +352,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
           >
             {categoryOptions.map((cat) => (
               <option key={cat} value={cat}>
-                {cat === ALL ? 'All Categories' : cat}
+                {cat === 'all' ? 'All Categories' : cat}
               </option>
             ))}
           </select>
@@ -342,7 +365,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
           >
             {machineOptions.map((machine) => (
               <option key={machine} value={machine}>
-                {machine === ALL ? 'All Machines' : machine}
+                {machine === 'all' ? 'All Machines' : machine}
               </option>
             ))}
           </select>
@@ -355,7 +378,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
           >
             {rarityOptions.map((rarity) => (
               <option key={rarity} value={rarity}>
-                {rarity === ALL ? 'All Rarities' : `Rarity ${rarity}`}
+                {rarity === 'all' ? 'All Rarities' : `Rarity ${rarity}`}
               </option>
             ))}
           </select>
@@ -366,7 +389,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
             onChange={(e) => setUsesRawMaterialFilter(e.target.value)}
             aria-label="Filter by raw material usage"
           >
-            <option value={ALL}>Raw Materials: Any</option>
+            <option value="all">Raw Materials: Any</option>
             <option value="yes">Uses Raw Materials</option>
             <option value="no">No Raw Materials</option>
           </select>
@@ -389,7 +412,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
 
             <button
               className="sort-direction-btn"
-              onClick={() => setSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'))}
+              onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
               aria-label={`Sort ${sortDirection === 'asc' ? 'ascending' : 'descending'}`}
             >
               {sortDirection === 'asc' ? '↑' : '↓'}

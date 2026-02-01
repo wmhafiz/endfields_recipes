@@ -33,6 +33,46 @@ export interface ProductionChain {
 }
 
 /**
+ * Score a recipe based on how many raw material ingredients it uses.
+ * Higher score = better (more raw materials, fewer intermediates)
+ */
+export function scoreRecipeByRawMaterials(
+  recipe: EnrichedRecipe,
+  itemsById: Map<string, EnrichedItem>,
+): number {
+  let score = 0
+  for (const ingredient of recipe.ingredients) {
+    const item = itemsById.get(ingredient.itemId)
+    if (item?.isRawMaterial) {
+      score += 10 // Strongly prefer raw materials
+    } else {
+      score -= 1 // Penalty for intermediate items
+    }
+  }
+  return score
+}
+
+/**
+ * Filter recipes for chain building:
+ * - Excludes manual crafting recipes (type === 'manual')
+ * - Sorts by raw material preference (ore-based paths first)
+ */
+export function filterRecipesForChain(
+  recipes: EnrichedRecipe[],
+  itemsById: Map<string, EnrichedItem>,
+): EnrichedRecipe[] {
+  // Filter out manual recipes
+  const machineRecipes = recipes.filter((recipe) => recipe.type !== 'manual')
+
+  // Sort by raw material score (highest first)
+  return machineRecipes.sort((a, b) => {
+    const scoreA = scoreRecipeByRawMaterials(a, itemsById)
+    const scoreB = scoreRecipeByRawMaterials(b, itemsById)
+    return scoreB - scoreA // Higher score first
+  })
+}
+
+/**
  * Find all recipes that produce a given output by itemId
  */
 export function findRecipesForOutputById(
@@ -40,6 +80,19 @@ export function findRecipesForOutputById(
   recipes: EnrichedRecipe[],
 ): EnrichedRecipe[] {
   return recipes.filter((recipe) => recipe.outputs.some((o) => o.itemId === itemId))
+}
+
+/**
+ * Find all recipes that produce a given output, filtered and sorted for chain building
+ * Excludes manual recipes and prefers ore-based paths
+ */
+export function findRecipesForChain(
+  itemId: string,
+  recipes: EnrichedRecipe[],
+  itemsById: Map<string, EnrichedItem>,
+): EnrichedRecipe[] {
+  const outputRecipes = findRecipesForOutputById(itemId, recipes)
+  return filterRecipesForChain(outputRecipes, itemsById)
 }
 
 /**
@@ -99,11 +152,15 @@ export function buildProductionChain(
     visited.add(currentItemId)
 
     const item = itemsById.get(currentItemId)
-    const availableRecipes = findRecipesForOutputById(currentItemId, data.recipes)
+
+    // Get filtered and sorted recipes (excludes manual, prefers ore-based paths)
+    const availableRecipes = findRecipesForChain(currentItemId, data.recipes, itemsById)
     const selectedIndex = selectedRecipes.get(currentItemId) ?? 0
     const recipe = availableRecipes[selectedIndex] ?? availableRecipes[0]
 
     const itemNodeId = generateNodeId()
+    // Treat as raw material if: marked as raw, OR no machine recipes available
+    // (items with only manual recipes are treated as terminal nodes)
     const isRawMaterial = item?.isRawMaterial ?? !recipe
 
     // Create item node with quantity info

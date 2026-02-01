@@ -7,7 +7,9 @@ import {
   buildProductionChain,
   filterCollapsedNodes,
   findRecipesForOutputById,
+  findRecipesForChain,
   type EnrichedDbData,
+  type EnrichedItem,
   type ChainNode,
   type ChainEdge,
 } from '../../utils/buildProductionChain'
@@ -92,6 +94,12 @@ export function useProductionChain({
   onToggleCollapse,
 }: UseProductionChainOptions): UseProductionChainResult {
   return useMemo(() => {
+    // Build item lookup for recipe filtering
+    const itemsById = new Map<string, EnrichedItem>()
+    for (const item of data.items) {
+      itemsById.set(item.itemId, item)
+    }
+
     // Build the raw chain using itemId for identity
     const chain = buildProductionChain(itemId, data, selectedRecipes, maxDepth)
 
@@ -102,7 +110,8 @@ export function useProductionChain({
       collapsedNodeIds,
     )
 
-    // Track items with multiple recipes (by itemId)
+    // Track items with multiple machine recipes (by itemId)
+    // Note: We count all recipes (including manual) so user knows alternatives exist
     const hasMultipleRecipes = new Map<string, number>()
     for (const node of chain.nodes) {
       if (node.type === 'item' && node.itemId) {
@@ -116,7 +125,8 @@ export function useProductionChain({
     // Convert to React Flow nodes
     const reactFlowNodes: Node[] = filteredChainNodes.map((chainNode: ChainNode) => {
       if (chainNode.type === 'item') {
-        const hasInputs = findRecipesForOutputById(chainNode.itemId!, data.recipes).length > 0
+        // Check for machine recipes (not manual) - items with only manual recipes are terminal
+        const hasInputs = findRecipesForChain(chainNode.itemId!, data.recipes, itemsById).length > 0
 
         const nodeData: ItemNodeData = {
           itemId: chainNode.itemId!,

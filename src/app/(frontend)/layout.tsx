@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import './styles.css'
 
 export const metadata = {
@@ -28,7 +29,9 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
             </div>
           </div>
         </nav>
-        <main>{children}</main>
+        <NuqsAdapter>
+          <main>{children}</main>
+        </NuqsAdapter>
       </body>
     </html>
   )
