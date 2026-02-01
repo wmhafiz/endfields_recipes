@@ -12,12 +12,14 @@ import {
 } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 import { ItemNode, type ItemNodeData } from './ItemNode'
 import { FacilityNode } from './FacilityNode'
 import { ChainControls } from './ChainControls'
 import { useProductionChain } from './useProductionChain'
-import type { EnrichedDbData } from '../../types/recipes'
+import { ImageOrPlaceholder } from '../ImageOrPlaceholder'
+import type { EnrichedDbData, EnrichedItem } from '../../types/recipes'
 
 const nodeTypes = {
   item: ItemNode,
@@ -27,20 +29,17 @@ const nodeTypes = {
 interface ProductionChainProps {
   itemSlug: string
   data: EnrichedDbData
+  item: EnrichedItem
 }
 
-export function ProductionChain({ itemSlug, data }: ProductionChainProps) {
+export function ProductionChain({ itemSlug, data, item }: ProductionChainProps) {
   const router = useRouter()
-
-  // Find item by slug to get itemId
-  const item = useMemo(() => {
-    return data.items.find((i) => i.slug === itemSlug)
-  }, [data.items, itemSlug])
 
   // State for controls
   const [depthLimit, setDepthLimit] = useState<number | undefined>(undefined)
   const [selectedRecipes, setSelectedRecipes] = useState<Map<string, number>>(new Map())
   const [collapsedNodeIds, setCollapsedNodeIds] = useState<Set<string>>(new Set())
+  const [controlsCollapsed, setControlsCollapsed] = useState(false)
 
   // Toggle collapse handler
   const handleToggleCollapse = useCallback((nodeId: string) => {
@@ -61,7 +60,7 @@ export function ProductionChain({ itemSlug, data }: ProductionChainProps) {
     edges: initialEdges,
     hasMultipleRecipes,
   } = useProductionChain({
-    itemId: item?.itemId ?? '',
+    itemId: item.itemId,
     data,
     selectedRecipes,
     collapsedNodeIds,
@@ -105,22 +104,37 @@ export function ProductionChain({ itemSlug, data }: ProductionChainProps) {
     setDepthLimit(newDepth)
   }, [])
 
-  if (!item) {
-    return <p className="no-recipes-text">Item not found.</p>
-  }
-
   return (
-    <div className="production-chain-container">
-      <ChainControls
-        depthLimit={depthLimit}
-        onDepthChange={handleDepthChange}
-        hasMultipleRecipes={hasMultipleRecipes}
-        selectedRecipes={selectedRecipes}
-        onRecipeChange={handleRecipeChange}
-        data={data}
-      />
+    <div className="chain-fullscreen">
+      {/* Header overlay with back link and item info */}
+      <div className="chain-header-overlay">
+        <Link href="/" className="chain-back-link">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+          Back to Items
+        </Link>
+        <div className="chain-item-badge">
+          <ImageOrPlaceholder
+            imagePath={item.imageUrl}
+            alt={item.itemName}
+            width={28}
+            height={28}
+            className="chain-item-badge-img"
+          />
+          <span>{item.itemName}</span>
+        </div>
+      </div>
 
-      <div className="production-chain-flow">
+      {/* Full-screen React Flow canvas */}
+      <div className="chain-canvas">
         <ReactFlow
           nodes={nodes}
           edges={edges}
@@ -138,6 +152,61 @@ export function ProductionChain({ itemSlug, data }: ProductionChainProps) {
           <Background variant={BackgroundVariant.Dots} gap={16} size={1} color="#2a2a3e" />
         </ReactFlow>
       </div>
+
+      {/* Bottom bar with controls */}
+      {controlsCollapsed ? (
+        <div className="chain-controls-collapsed">
+          <button
+            className="chain-controls-expand-btn"
+            onClick={() => setControlsCollapsed(false)}
+            aria-label="Show controls"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M18 15l-6-6-6 6" />
+            </svg>
+            Controls
+          </button>
+        </div>
+      ) : (
+        <div className="chain-bottom-bar">
+          <div className="chain-bottom-header">
+            <span className="chain-bottom-title">Chain Controls</span>
+            <button
+              className="chain-controls-collapse-btn"
+              onClick={() => setControlsCollapsed(true)}
+              aria-label="Hide controls"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+          </div>
+          <div className="chain-bottom-content">
+            <ChainControls
+              depthLimit={depthLimit}
+              onDepthChange={handleDepthChange}
+              hasMultipleRecipes={hasMultipleRecipes}
+              selectedRecipes={selectedRecipes}
+              onRecipeChange={handleRecipeChange}
+              data={data}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
