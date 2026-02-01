@@ -31,7 +31,7 @@ interface ProductionChainProps {
   item: EnrichedItem
 }
 
-export function ProductionChain({ itemSlug, data, item }: ProductionChainProps) {
+export function ProductionChain({ itemSlug: _itemSlug, data, item }: ProductionChainProps) {
   const router = useRouter()
 
   // State for controls

@@ -52,7 +52,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
     [setUrlState],
   )
   const setSelectedType = useCallback(
-    (value: string) => setUrlState({ type: value as typeof urlState.type }),
+    (value: string) => setUrlState({ type: value as 'all' | 'machine' | 'manual' | 'hub' }),
     [setUrlState],
   )
   const setSelectedCategory = useCallback(
@@ -68,7 +68,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
     [setUrlState],
   )
   const setUsesRawMaterialFilter = useCallback(
-    (value: string) => setUrlState({ raw: value as typeof urlState.raw }),
+    (value: string) => setUrlState({ raw: value as 'all' | 'yes' | 'no' }),
     [setUrlState],
   )
   const setSortField = useCallback(
