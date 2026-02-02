@@ -1,11 +1,6 @@
 'use client'
 
-import {
-  parseAsString,
-  parseAsStringLiteral,
-  createParser,
-  useQueryStates,
-} from 'nuqs'
+import { parseAsString, parseAsStringLiteral, createParser, useQueryStates } from 'nuqs'
 import type { RecipeSortField, SortDirection, ViewMode } from '../types/recipes'
 
 // Define valid options for literal parsers
@@ -36,7 +31,7 @@ export const recipeBrowserParsers = {
   q: parseAsString.withDefault(''),
 
   // Recipe type filter
-  type: parseAsStringLiteral(typeOptions).withDefault('all'),
+  type: parseAsStringLiteral(typeOptions).withDefault('machine'),
 
   // Category filter (free-form string since categories are dynamic)
   cat: parseAsString.withDefault('Consumable'),
@@ -51,7 +46,7 @@ export const recipeBrowserParsers = {
   raw: parseAsStringLiteral(rawMaterialOptions).withDefault('all'),
 
   // Sort field
-  sort: parseAsStringLiteral(sortFieldOptions).withDefault('default'),
+  sort: parseAsStringLiteral(sortFieldOptions).withDefault('name'),
 
   // Sort direction
   dir: parseAsStringLiteral(sortDirectionOptions).withDefault('asc'),
@@ -76,12 +71,12 @@ export interface RecipeBrowserUrlState {
 // Default values (used for clearing filters)
 export const recipeBrowserDefaults: RecipeBrowserUrlState = {
   q: '',
-  type: 'all',
+  type: 'machine',
   cat: 'Consumable',
   machine: 'all',
   rarity: 'all',
   raw: 'all',
-  sort: 'default',
+  sort: 'name',
   dir: 'asc',
   view: 'grid',
 }

@@ -2,7 +2,12 @@
 
 import Link from 'next/link'
 import { useMemo, useCallback } from 'react'
-import type { EnrichedDbData, EnrichedRecipe, RecipeSortField, SortDirection } from '../types/recipes'
+import type {
+  EnrichedDbData,
+  EnrichedRecipe,
+  RecipeSortField,
+  SortDirection,
+} from '../types/recipes'
 import { ImageOrPlaceholder } from './ImageOrPlaceholder'
 import { useRecipeBrowserParams, recipeBrowserDefaults } from '../hooks/useRecipeBrowserParams'
 
@@ -47,10 +52,7 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
   } = urlState
 
   // Convenience setters that update individual URL params
-  const setSearchQuery = useCallback(
-    (value: string) => setUrlState({ q: value }),
-    [setUrlState],
-  )
+  const setSearchQuery = useCallback((value: string) => setUrlState({ q: value }), [setUrlState])
   const setSelectedType = useCallback(
     (value: string) => setUrlState({ type: value as 'all' | 'machine' | 'manual' | 'hub' }),
     [setUrlState],
@@ -333,19 +335,6 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
         <div className="filter-row">
           <select
             className="category-filter"
-            value={selectedType}
-            onChange={(e) => setSelectedType(e.target.value)}
-            aria-label="Filter by type"
-          >
-            {typeOptions.map((type) => (
-              <option key={type} value={type}>
-                {type === 'all' ? 'All Types' : type.charAt(0).toUpperCase() + type.slice(1)}
-              </option>
-            ))}
-          </select>
-
-          <select
-            className="category-filter"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
             aria-label="Filter by category"
@@ -353,6 +342,19 @@ export function RecipeBrowser({ data }: RecipeBrowserProps) {
             {categoryOptions.map((cat) => (
               <option key={cat} value={cat}>
                 {cat === 'all' ? 'All Categories' : cat}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="category-filter"
+            value={selectedType}
+            onChange={(e) => setSelectedType(e.target.value)}
+            aria-label="Filter by type"
+          >
+            {typeOptions.map((type) => (
+              <option key={type} value={type}>
+                {type === 'all' ? 'All Types' : type.charAt(0).toUpperCase() + type.slice(1)}
               </option>
             ))}
           </select>
