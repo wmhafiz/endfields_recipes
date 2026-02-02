@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
+import { Analytics } from '@vercel/analytics/next'
 import './styles.css'
 
 export const metadata = {
@@ -32,6 +33,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
         <NuqsAdapter>
           <main>{children}</main>
         </NuqsAdapter>
+        <Analytics />
       </body>
     </html>
   )
