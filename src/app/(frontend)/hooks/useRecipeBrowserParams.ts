@@ -39,7 +39,7 @@ export const recipeBrowserParsers = {
   type: parseAsStringLiteral(typeOptions).withDefault('all'),
 
   // Category filter (free-form string since categories are dynamic)
-  cat: parseAsString.withDefault('all'),
+  cat: parseAsString.withDefault('Consumable'),
 
   // Machine filter (free-form string since machines are dynamic)
   machine: parseAsString.withDefault('all'),
@@ -77,7 +77,7 @@ export interface RecipeBrowserUrlState {
 export const recipeBrowserDefaults: RecipeBrowserUrlState = {
   q: '',
   type: 'all',
-  cat: 'all',
+  cat: 'Consumable',
   machine: 'all',
   rarity: 'all',
   raw: 'all',
